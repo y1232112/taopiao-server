@@ -1,14 +1,15 @@
 package com.example.tp.entity;
 
-
-
-
-
 public class User {
     private Integer id;
-    private String userName;
+    private String nickName;
     private String passWord;
     private String realName;
+    private String sex;
+    private String phone;
+    private String address;
+    private String createTime;
+    private String updateTime;
 
     public Integer getId() {
         return id;
@@ -18,12 +19,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getPassWord() {
@@ -42,13 +43,58 @@ public class User {
         this.realName = realName;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", nickName='" + nickName + '\'' +
                 ", passWord='" + passWord + '\'' +
                 ", realName='" + realName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
                 '}';
     }
 }
