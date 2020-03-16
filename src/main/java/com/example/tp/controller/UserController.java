@@ -1,6 +1,7 @@
 package com.example.tp.controller;
 
 import com.example.tp.entity.User;
+import com.example.tp.service.RedisService;
 import com.example.tp.service.UserService;
 import com.example.tp.token.ObjectToken;
 import com.example.tp.utils.JsonUtils;
@@ -27,6 +28,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisService redisService;
 
 
     /**
@@ -74,15 +77,16 @@ public class UserController {
 //        读取获得的，客户端传来的json
         JsonNode node = mapper.readTree(json);
 //        读取token的节点
-        JsonNode tokenNode=node.path("token");
+//        JsonNode tokenNode=node.path("token");
 //        将读取的node节点转换为字符串得到token
-        String readtoken=mapper.writeValueAsString(tokenNode);
+//        String readtoken=mapper.writeValueAsString(tokenNode);
 //        处理双引号
-        String token=readtoken.replace("\"","");
+//        String token=readtoken.replace("\"","");
 //        如果客户端传来的登录信息中token值为空,判定为第一次登录，或的登录过期。或为重新登录
         //            读取params节点
         String nickname=JsonUtils.getFormJson(json,"nickname");
         String password=JsonUtils.getFormJson(json,"password");
+        System.out.println(nickname+"------"+password);
         ObjectToken objectToken=new ObjectToken.Builder().setNikeName(nickname).setPassWord(password).build();
 
         System.out.println("user:"+nickname);
@@ -100,18 +104,21 @@ public class UserController {
                 User user=list.get(0);
                 System.out.println("user:"+user);
                 String db_pwd=user.getPassWord();
+                Integer userID=user.getUserId();
                 System.out.println("----pwd---"+db_pwd);
 //                判断String是否相等用equals方法
                 if(password.equals(db_pwd)){
                     System.out.println("--------if------");
+//                    将token写入redis
+                    redisService.delToken(userID.toString(),objectToken.token);
                     return JsonUtils.tokenInJson(objectToken.token);
                 }else {
                     System.out.println("--------else------");
-                    return JsonUtils.doOtherCode(800,"不存在该用户请注册");
+                    return JsonUtils.doOtherCode(800,"登录失败","不存在该用户请注册");
                 }
             }else {
                 System.out.println("--------end------");
-                return JsonUtils.doOtherCode(800,"不存在该用户请注册");
+                return JsonUtils.doOtherCode(800,"登录失败","不存在该用户请注册");
             }
 
 
@@ -153,7 +160,7 @@ public class UserController {
         if(!list.isEmpty()){
 //             User user= list.get(0);
 
-               return JsonUtils.doOtherCode(800,"此昵称已存在，请重新输入");
+               return JsonUtils.doOtherCode(800,"操作失败","此昵称已存在，请重新输入");
 
           }else {
             Map<String,String> map1=new HashMap<>();
@@ -167,8 +174,8 @@ public class UserController {
                System.out.println("---------------------");
              int num=  userService.insertRegist(nickname,password,sex,phone,createtime);
                 System.out.println("-----------插入个数---------"+num);
-                return JsonUtils.doOtherCode(200,"亲！！您已注册成功，请前往登录");
-            }else return JsonUtils.doOtherCode(800,"此手机号码已经被人注册");
+                return JsonUtils.doOtherCode(200,"注册成功","亲！！您已注册成功，请前往登录");
+            }else return JsonUtils.doOtherCode(800,"注册失败","此手机号码已经被人注册");
         }
     }
 

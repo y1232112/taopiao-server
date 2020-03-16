@@ -1,7 +1,7 @@
 package com.example.tp.entity;
 
 public class User {
-    private Integer id;
+    private Integer userId;
     private String nickName;
     private String passWord;
     private String realName;
@@ -10,13 +10,22 @@ public class User {
     private String address;
     private String createTime;
     private String updateTime;
+    private String avatar;
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getNickName() {
@@ -86,7 +95,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "userId=" + userId +
                 ", nickName='" + nickName + '\'' +
                 ", passWord='" + passWord + '\'' +
                 ", realName='" + realName + '\'' +
@@ -95,6 +104,7 @@ public class User {
                 ", address='" + address + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
+                ", avatar='" + avatar + '\'' +
                 '}';
     }
 }

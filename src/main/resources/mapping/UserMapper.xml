@@ -2,40 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.tp.mapper.UserMapper">
 
-   <resultMap id="UserResultMap" type="com.example.tp.entity.User">
-        <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
-        <result column="password" jdbcType="VARCHAR" property="passWord" />
-        <result column="real_name" jdbcType="VARCHAR" property="realName" />
-       <result column="sex" jdbcType="VARCHAR" property="sex" />
-       <result column="phone" jdbcType="VARCHAR" property="phone" />
-       <result column="create_time" jdbcType="VARCHAR" property="createTime" />
-       <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
-    </resultMap>
+<!--   <resultMap id="UserResultMap" type="com.example.tp.entity.User">-->
+<!--        <result column="id" jdbcType="INTEGER" property="id" />-->
+<!--        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />-->
+<!--        <result column="password" jdbcType="VARCHAR" property="passWord" />-->
+<!--        <result column="real_name" jdbcType="VARCHAR" property="realName" />-->
+<!--       <result column="sex" jdbcType="VARCHAR" property="sex" />-->
+<!--       <result column="phone" jdbcType="VARCHAR" property="phone" />-->
+<!--       <result column="create_time" jdbcType="VARCHAR" property="createTime" />-->
+<!--       <result column="update_time" jdbcType="VARCHAR" property="updateTime" />-->
+<!--    </resultMap>-->
 
 
     <!-- 根据主键查询-->
     <select id="getUserById" resultType="com.example.tp.entity.User" parameterType="java.lang.Integer">
         select *
-        from userinfo
-        where id = #{id}
+        from user_info
+        where user_id= #{id}
     </select>
 <!--    查询所有用户-->
     <select id="getAllUser" resultType="hashmap">
-        select * from userinfo
+        select * from user_info
     </select>
 <!--    根据用户名进行查询,用户名唯一-->
     <select id="getByName"  resultType="com.example.tp.entity.User" parameterType="map">
-        select * from userinfo where
+        select * from user_info where
         nick_name=  #{nickname}
 
     </select>
     <select id="getByPhone" resultType="com.example.tp.entity.User" parameterType="map">
-        select * from userinfo where phone=#{phone}
+        select * from user_info where phone=#{phone}
     </select>
 <!--    插入注册数据-->
     <insert id="insertRegist"  useGeneratedKeys="true" keyProperty="id">
-        insert into userinfo (nick_name,password,sex,phone,create_time) values (#{nickname},#{password},#{sex},#{phone},
+        insert into user_info (nick_name,password,sex,phone,create_time) values (#{nickname},#{password},#{sex},#{phone},
         #{createtime})
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
             select LAST_INSERT_ID() AS id

@@ -24,9 +24,10 @@ public class JsonUtils {
 //        向根节点添加数据
         nodes.put("version",version);
         nodes.put("code",errorcode);
+        nodes.put("message","操作失败");
 //        创建新的子节点：------params
         ObjectNode paramsNodes=mapper.createObjectNode();
-        paramsNodes.put("massage","操作失败");
+        paramsNodes.put("detailmsg","操作失败");
 //        把子节点挂载到根节点上
         nodes.set("params",paramsNodes);
         return mapper.writeValueAsString(nodes);
@@ -44,9 +45,10 @@ public class JsonUtils {
 //        向根节点添加数据
         nodes.put("version",version);
         nodes.put("code",code);
+        nodes.put("message","操作成功");
 //        创建新的子节点：------params
         ObjectNode paramsNodes=mapper.createObjectNode();
-        paramsNodes.put("massage","操作成功");
+        paramsNodes.put("detailmsg","操作成功");
 //        把子节点挂载到根节点上
         nodes.set("params",paramsNodes);
         return mapper.writeValueAsString(nodes);
@@ -67,9 +69,10 @@ public class JsonUtils {
         nodes.put("code",code);
 //        在根节点加入token
         nodes.put("token",token);
+        nodes.put("message","登录成功");
 //        创建新的子节点：------params
         ObjectNode paramsNodes=mapper.createObjectNode();
-        paramsNodes.put("massage","操作成功");
+        paramsNodes.put("detailmsg","操作成功");
 //        把子节点挂载到根节点上
         nodes.set("params",paramsNodes);
         return mapper.writeValueAsString(nodes);
@@ -88,6 +91,7 @@ public class JsonUtils {
 //        向根节点添加数据
         nodes.put("version",version);
         nodes.put("code",code);
+        nodes.put("message","操作成功");
         nodes.set("params",paramsNodes);
         return mapper.writeValueAsString(nodes);
     }
@@ -99,16 +103,17 @@ public class JsonUtils {
      * @return
      * @throws JsonProcessingException
      */
-    public static String doOtherCode(int other,String description) throws JsonProcessingException {
+    public static String doOtherCode(int other,String message,String description) throws JsonProcessingException {
         ObjectMapper mapper=new ObjectMapper();
 //        创建根节点
         ObjectNode   nodes=mapper.createObjectNode();
 //        向根节点添加数据
         nodes.put("version",version);
         nodes.put("code",other);
+        nodes.put("message","");
 //        创建新的子节点：------params
         ObjectNode paramsNodes=mapper.createObjectNode();
-        paramsNodes.put("massage",description);
+        paramsNodes.put("detailmsg",description);
 //        把子节点挂载到根节点上
         nodes.set("params",paramsNodes);
 

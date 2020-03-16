@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.CinemaAdminMapper">
+    <!-- 根据主键查询-->
+    <select id="getCinemaAdminById" resultType="com.example.tp.entity.CinemaAdmin" parameterType="java.lang.Integer">
+        select *
+        from cinema_admin
+        where cinema_admin_id = #{id}
+    </select>
+    <select id="getAllCinemaAdmin" resultType="hashmap">
+        select * from cinema_admin
+    </select>
+    <select id="selectByNick"  resultType="com.example.tp.entity.CinemaAdmin" parameterType="map">
+        select * from cinema_admin where
+        nick_name=  #{nickname}
+
+    </select>
+</mapper>

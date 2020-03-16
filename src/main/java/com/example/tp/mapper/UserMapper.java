@@ -12,7 +12,7 @@ import java.util.Map;
 @Repository
 public interface UserMapper {
     User user=new User();
-    Integer id=user.getId();
+    Integer id=user.getUserId();
     /**
      *
      * @param id
