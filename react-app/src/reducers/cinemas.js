@@ -5,11 +5,10 @@ const initState={
     cinemas:[]
 }
 const cinemas=(state=initState.cinemas,action)=>{
-    switch (action.type) {
-        case RECEIVE_CINEMA:
-            return action.cinemas;
-        default:
-            return state
+    if (action.type === RECEIVE_CINEMA) {
+        return action.cinemas;
+    } else {
+        return state
     }
 }
 export default cinemas;

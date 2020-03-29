@@ -6,10 +6,12 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "antd": "^4.0.3",
     "axios": "^0.19.2",
     "express": "^4.17.1",
     "font-awesome": "^4.7.0",
     "http-proxy-middleware": "^1.0.1",
+    "jquery": "^3.4.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-fontawesome": "^1.7.1",
@@ -42,5 +44,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8084"
+  "proxy": "http://localhost:8084",
+  "devDependencies": {
+    "babel-plugin-import": "^1.13.0"
+  }
 }

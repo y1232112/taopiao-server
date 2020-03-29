@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class JsonUtils {
     private static final double version=0.1;/*返回版本*/
     private static final int code=200;               /* 成功码*/
-    private static final int errorcode=800;      /*错误码*/
+    private static final int errorCode=800;      /*错误码*/
 
 
     /**
@@ -23,7 +23,7 @@ public class JsonUtils {
         ObjectNode   nodes=mapper.createObjectNode();
 //        向根节点添加数据
         nodes.put("version",version);
-        nodes.put("code",errorcode);
+        nodes.put("code",errorCode);
         nodes.put("message","操作失败");
 //        创建新的子节点：------params
         ObjectNode paramsNodes=mapper.createObjectNode();
@@ -113,7 +113,7 @@ public class JsonUtils {
         nodes.put("message","");
 //        创建新的子节点：------params
         ObjectNode paramsNodes=mapper.createObjectNode();
-        paramsNodes.put("detailmsg",description);
+        paramsNodes.put("detailMsg",description);
 //        把子节点挂载到根节点上
         nodes.set("params",paramsNodes);
 
@@ -127,7 +127,7 @@ public class JsonUtils {
      * @return
      * @throws JsonProcessingException
      */
-    public static String getFormJson(String json,String name) throws JsonProcessingException {
+    public static String getFormJson(String json, String name) throws JsonProcessingException {
         ObjectMapper mapper=new ObjectMapper();
 //        读取根节点
         JsonNode node=mapper.readTree(json);
@@ -146,6 +146,16 @@ public class JsonUtils {
         nodes.put("code",200);
         nodes.put("token",token);
         nodes.put("message","登录成功");
+        return mapper.writeValueAsString(nodes);
+    }
+    public static String pageJson(JsonNode pageInfo,JsonNode params) throws JsonProcessingException {
+        ObjectMapper mapper=new ObjectMapper();
+        ObjectNode   nodes=mapper.createObjectNode();
+        nodes.put("version",version);
+        nodes.put("code",200);
+        nodes.put("message","操作成功");
+        nodes.put("pageInfo",pageInfo);
+        nodes.put("params",params);
         return mapper.writeValueAsString(nodes);
     }
 }

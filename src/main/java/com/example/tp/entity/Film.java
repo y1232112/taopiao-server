@@ -13,6 +13,7 @@ public class Film {
     private String wishNum;
     private String score;
     private String actor;
+    private String img;
 
     public Integer getFilmId() {
         return filmId;
@@ -110,6 +111,14 @@ public class Film {
         this.actor = actor;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     @Override
     public String toString() {
         return "Film{" +
@@ -125,6 +134,7 @@ public class Film {
                 ", wishNum='" + wishNum + '\'' +
                 ", score='" + score + '\'' +
                 ", actor='" + actor + '\'' +
+                ", img='" + img + '\'' +
                 '}';
     }
 }

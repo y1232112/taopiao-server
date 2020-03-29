@@ -53,7 +53,7 @@ class App extends React.Component{
 
 
     render() {
-        console.log('0-props--private-render-',this.props.loginprivate)
+        console.log('0-props--private-render-',this.props.loginPrivate)
 
         console.log('0-props---change---render-',this.props.change)
     return (
@@ -76,6 +76,6 @@ class App extends React.Component{
 }
 }
 const mapStateToProps=state=>({
-    change:state.loginprivate
+    change:state.loginPrivate
 })
 export default connect(mapStateToProps) (App);

@@ -7,7 +7,7 @@ public class Cinema {
     private String city;
     private String county;
     private String Address;
-    private String cinemaAdminId;
+
 
     public Integer getCinemaId() {
         return cinemaId;
@@ -57,14 +57,6 @@ public class Cinema {
         Address = address;
     }
 
-    public String getCinemaAdminId() {
-        return cinemaAdminId;
-    }
-
-    public void setCinemaAdminId(String cinemaAdminId) {
-        this.cinemaAdminId = cinemaAdminId;
-    }
-
     @Override
     public String toString() {
         return "Cinema{" +
@@ -74,7 +66,6 @@ public class Cinema {
                 ", city='" + city + '\'' +
                 ", county='" + county + '\'' +
                 ", Address='" + Address + '\'' +
-                ", cinemaAdminId='" + cinemaAdminId + '\'' +
                 '}';
     }
 }

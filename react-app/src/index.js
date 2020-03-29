@@ -8,11 +8,13 @@ import {applyMiddleware, createStore} from "redux";
 import reducer from './reducers';
 import {Provider} from "react-redux";
 import {createLogger} from "redux-logger/src";
-import getAllFilms , {getAllCinemas} from "./apis/data";
-import {cinemaListApi, filmListApi} from "./apis/api";
-import * as types from "./constants/actionTypes"
-import {RECEIVE_FILMS} from "./constants/actionTypes";
+import getAllFilms, {getAllCinemas, getAllMovieCrew, getCinemaPage, getFilmPage, getMovieCrewPage} from "./apis/data";
+import * as API from "./apis/api";
 import {LOGIN_PRIVITE_INIT} from "./constants/actionTypes";
+import {filmListApi} from "./apis/api";
+import {cinemaListApi} from "./apis/api";
+import {movieCrewListApi} from "./apis/api";
+
 
 
 const middleware=[thunk];
@@ -23,17 +25,23 @@ export const store=createStore(
     reducer,
     applyMiddleware(...middleware)
 );
-getAllFilms(filmListApi,types.RECEIVE_FILMS);
-getAllCinemas(cinemaListApi,types.RECEIVE_CINEMA);
+// getAllFilms(filmListApi);
+// getAllCinemas(cinemaListApi);
+// getAllMovieCrew(movieCrewListApi)
+getFilmPage(API.filmPageApi,1,5);
+getCinemaPage(API.cinemaPageApi,1,5);
+getMovieCrewPage(API.movieCrewPageApi,1,5)
+
 store.dispatch({
     type:LOGIN_PRIVITE_INIT,
-    loginprivate: 0
+    loginPrivate: 0
 });
-let loginprivate=store.getState().loginprivate;
-console.log('----------index--store------',loginprivate);
+let loginPrivate=store.getState().loginPrivate;
+console.log('----------index--store------',loginPrivate);
+
 ReactDOM.render(
     <Provider store={store}>
-        <App loginprivate={loginprivate}/>
+        <App loginPrivate={loginPrivate}/>
     </Provider>
 , document.getElementById('root'));
 

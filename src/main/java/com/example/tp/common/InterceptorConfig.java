@@ -17,6 +17,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 //        添加拦截器
         ir.addPathPatterns("/*");
 //        添加不拦截的请求
-        ir.excludePathPatterns("/doLogin","/doRegist");
+        ir.excludePathPatterns("/doLogin","/doRegister","/movieCrew","/film","/cinema","/movieCrew/search"
+        ,"/cinema/search","/film/search");
     }
 }

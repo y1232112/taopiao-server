@@ -1,27 +1,48 @@
-
-/*Login模块*/
+div{
+    white-space:nowrap;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+/*********************** Login模块 *******************************************8*/
 #bg{
-    background-color: rgba(105, 62, 14, 1);
-    background-size: auto;
-    padding-bottom: 99999px;
+    background-image: url("./imges/bg_01.jpg");
 
 }
 #login{
-    background-color: #936123;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 5px;
+
 }
-.myinput:active{
-    border: brown solid 2px;
+/*.myinput:active{*/
+/*    border: #f4f4f4 solid 2px;*/
+/*}*/
+.
+.myinput{
+   border: #777 solid 2px;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 .myinput:hover{
-    border: #1707a5 solid 2px;
+    cursor: pointer;
+    border:solid 2px #7b0b19;
+    background-color: #ffffff;
+}
+.myinput:active{
+    background-color: white;
 }
 #btn{
-    background-color: chocolate;
+    background-color: #7b0b19;
+    cursor: pointer;
+    color: #d5d5d5;
 }
+
 #btn:hover{
+    cursor: pointer;
     background-color: #4d251b;
+    color: #d5d5d5;
 }
+/******************* 导航菜单样式 **************************************************************8*/
 #menu{
 
 
@@ -34,12 +55,13 @@
 
      width: 100%;
     list-style: none;
-    margin:8px 0px 0px 0px;
+    margin:0;
+    padding: 8px  0px;
 }
 
 
 #menu .warp_li{
-    text-indent: 15mm;
+    text-indent: 20mm;
 }
 
 #menu .warp_li:focus{
@@ -52,13 +74,15 @@
     background-color: #1a1a35;
 }
 .two_ul{
-    text-indent: 20mm;
+    text-indent: 25mm;
     margin: 0;
     padding: 0;
     width: 100%;
 }
 #menu li .two_li:hover{
     background-color: #1d1d48;
+    border-bottom:#ffffff 1px  solid;
+    border-image: linear-gradient(to right, #1d1d48, #d5d5d5, #1d1d48) 1 10;
 }
 
 #menu:active{
@@ -66,4 +90,397 @@
 }
 #menu:focus{
     cursor: pointer;
+}
+/***************************编辑表格样式*****************************************************/
+#editTable tr th:nth-last-child(2), #editTable tr td:nth-last-child(2){
+    padding-right: 170px;
+}
+#editTable th:first-child,#editTable td:first-child{
+    position: absolute;
+    left: 0;
+    width: 50px;
+    /*width: 150px;*/
+
+    text-align: center;
+    text-align: center;
+
+}
+
+
+#editTable tr th:last-child,#editTable tr td:last-child {
+    background: inherit;
+    border-left:1px solid #ddd;
+
+    text-align: center;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+
+}
+#editTable th:nth-last-child(1){
+    padding-top: 7px;
+    padding-right: 0px;
+    position: absolute;
+    width: 88px;
+    right: 0px;
+}
+
+#content{
+    position: relative;
+}
+#editTable tr th:first-child, #editTable tr td:first-child {
+    background: inherit;
+    border-right:1px solid #ddd;
+    /*width:60px ;*/
+    text-align: center;
+    position: absolute;
+    left: 0;
+    z-index: 2;
+    padding-left: 10px;
+}
+/*table th:nth-last-child(1){*/
+/*    position: absolute;*/
+/*    right: 0px;*/
+/*    width: 150px;*/
+/*}*/
+#editTable th:first-child{
+    padding-right: 7px;
+    text-align: center;
+    width: 40px;
+    padding-left: 5px;
+    padding-top: 6px;
+}
+#editTable th:nth-child(2){
+    padding-left: 60px;
+
+}
+#editTable td:first-child{
+    width: 30px;
+    padding-left: 0px;
+
+
+}
+#editTable td:nth-child(2){
+    margin-left: 20px;
+    padding-left: 90px;
+}
+#editTable{
+    min-width: 100%;
+    text-align: center;
+}
+
+th{
+    background-color: #ececec;
+    color: #272727;
+    height: 35px;
+    border:#ececec 1px solid;
+    word-break: break-all;
+    white-space: nowrap;
+}
+td{
+    padding: 10px;
+
+    height: 30px;
+    margin: 0px;
+    word-break: break-all;
+    white-space: nowrap;
+}
+
+tr{
+    background-color: #fdfdfd;
+}
+
+tr:hover{
+    background-color: #f4f4f4;
+}
+table{
+    margin: 0 auto;
+    border-radius: 5px;
+    background-color: #ececec;
+    border: none;
+    border-collapse: collapse;
+
+}
+table:hover{
+    cursor: pointer;
+}
+/************************查看 表单样式****************************************/
+#readListTable{
+    min-width: 100%;
+    text-align: center;
+}
+/******************************************分页样式*******************************************/
+.page{
+    position: absolute;
+    bottom: -30px;
+    width: 100%;
+    right: 0px;
+
+}
+.page .countStyle{
+    color: #b40806;
+    font-size: 28px;
+    /*line-height: 28px;*/
+}
+/*----------------------分页的设置样式*/
+.sheZhiWrap{
+    visibility: hidden;
+    color: #7b0b19;
+}
+.sheZhiWrap:hover{
+    visibility: visible;
+}
+.sheZhiBtn{
+    margin-top: 5px;
+    width: 28px;
+    height: 28px;
+    align-items: baseline;
+    visibility: visible;
+}
+#tiShiSpan{
+    background-color: #ffffff;
+    /*color: #7b0b19;*/
+    right: -100px;
+    z-index: 2;
+    padding:35px 5px;
+    top:-100px;
+    border-radius: 10px;
+    font-weight: bold;
+    border: #7b0b19 solid 1px;
+}
+
+#tiShiSpan:hover{
+    background-color: #d5d5d5;
+    color: #7b0b19;
+  display: block;
+    z-index: 9999;
+    top: 30px;
+    right: 0px;
+}
+.sheZhiBtn .tiShiInfo{
+    display: none;
+}
+.sheZhiBtn .tiShiInfo:hover{
+    display: block;
+}
+/*--------分页的跳转样式*/
+#tzBtn .tiShiInfo{
+  display: none;
+}
+#tzBtn .tiShiInfo:hover{
+    display: block;
+}
+#tzSpan{
+     background-color: #ffffff;
+     /*color: #7b0b19;*/
+     right: -10px;
+     z-index: 2;
+     padding:20px 10px;
+     top:-70px;
+     border-radius: 10px;
+     font-weight: bold;
+     border: #7b0b19 solid 1px;
+ }
+#tzSpan:hover{
+    background-color: #ffffff;
+    color: #7b0b19;
+    display: block;
+    z-index: 9999;
+    /*top: -50px;*/
+    /*right: 50px;*/
+}
+.to,.size{
+    font-size: 12px;
+    margin-left: 5px;
+}
+.to #gotoPage{
+  width: 60px;
+
+}
+
+.size #modifyPageSize{
+    width: 60px;
+}
+/*-----------------------------------------------------------*/
+.page .count{
+    font-size: 12px;
+    margin-right: 12px;
+}
+ .pageSpan a{
+    width: 60px;
+    height: 60px;
+    padding: 5px 3px;
+    background-color: #f7f7f7;
+    margin: 0.2px;
+    border: 1px silver solid;
+    border-radius: 2px;
+}
+.pageSpan a:hover{
+    background-color: #1E90FF;
+    color: white;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.font_span{
+   background-color: #d5d5d5;
+    margin: 5px;
+}
+
+/*table表格的按钮样式*/
+.click{
+    border: none;
+    color: #1E90FF;
+
+}
+/**************** 组件   ButtonSearchBar *****************/
+/*ButtonSearchBar.js*/
+.someDeleteBtn{
+    background-color: #1E90FF;
+    border:1px solid #777;
+    color: #ffffff;
+    margin: 10px 0px;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+}
+.someDeleteBtn0{
+    background-color: rgba(202, 202, 202, 0.75);
+    border:1px solid #777;
+    color: #585858;
+    margin: 10px 0px;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+}
+.mySearch{
+    /*margin-left: 20px;*/
+    width: 100px;
+    height: 20px;
+    margin: 10px 10px;
+    border: 2px;
+}
+.mySearch:hover{
+    margin-left: 20px;
+    width: 200px;
+    height: 20px;
+    border: 2px;
+}
+#ButtonSearchBar .qBtn,.reBtn{
+    background-color: #1E90FF;
+    border:1px solid #777;
+    color: #ffffff;
+    margin: 4px;
+    width: 50px;
+    height: 27px;
+    border-radius: 5px;
+    border: none;
+}
+/******************  弹窗 样式 ********************/
+/*弹窗样式*/
+#dialog{
+    /*box-shadow: 10px 10px 5px #888888;*/
+    /*border: #888888 1px solid;*/
+    border: #777777 1px solid;
+}
+.dbutton{
+    background-color: #1E90FF;
+    border:1px solid #777;
+    color: #ffffff;
+    margin: 10px;
+    width: 70px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+
+
+}
+.dbutton:hover{
+    background-color: rgba(30, 144, 255, 0.75);
+}
+.dialogInput{
+    width: 60%;
+    float: right;
+
+}
+.dialogInput1{
+    outline:none;
+    border:none;
+    width: 60%;
+    float: right;
+    caret-color: rgba(0, 0, 0, 0)
+}
+.dialogInput1:hover{
+    outline:none;
+    border:none;
+}
+.dialogLabel{
+    width: 60%;
+
+}
+.dialogLabel{
+    width: 40%;
+}
+#dialogWrap div{
+    margin-top: 20px;
+}
+/*添加电影*/
+.addLabel{
+    width: 40%;
+}
+.addInput{
+    width: 60%;
+    float: right;
+    border: #b4b4b4 1px solid;
+    border-radius: 4px;
+}
+.addInput:hover{
+    cursor: pointer;
+    border-radius: 2px;
+}
+.addBar{
+    width: 40%;
+    margin: 0 auto;
+}
+.addBar div{
+    margin-top: 20px;
+}
+.add_button_row{
+    width: 100%;
+    text-align: center;
+}
+/*删除的弹窗样式*/
+.deleteDialog{
+   text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: #c7c7c7 solid 1px;
+
+}
+.deleteButton{
+    background-color: #ffffff;
+    border: #b8b8b8 solid 1px;
+    color: #1E90FF;
+    padding: 6px;
+    font-weight: bold;
+}
+.deleteButton:hover{
+    background-color: #1E90FF;
+    color: white;
+}
+.deleteDialogWrap{
+    border: 1px solid #cdcdcd;
+    border-radius: 1px;
+
+}
+/********************* not found *******************************/
+#not_found{
+    background-image: url("./imges/bg_notfound.jpg");
+}
+#goBackBtn{
+    background-image: url("./imges/bg_direct.png");
 }

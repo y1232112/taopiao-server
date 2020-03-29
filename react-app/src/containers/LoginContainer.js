@@ -1,12 +1,9 @@
 import React from "react";
-import {setCookie} from "../utils/cookieUtils";
-import Axios from "axios";
-import {cinemaAdminLoginApi, sysLoginApi} from "../apis/api";
+
 import {store} from "../index";
-import {loginSkip} from "../actions";
 import {connect} from "react-redux";
 import * as types from '../constants/actionTypes'
-import loginprivate from "../reducers/loginprivite";
+
 
 class LoginContainer extends React.Component{
 
@@ -43,7 +40,7 @@ class LoginContainer extends React.Component{
         }
          store.dispatch({
             type:types.LOGIN_PRIVITE_SKIP,
-                loginprivate:3
+                loginPrivate:3
         })
         //系统模块状态1,3，影城模块状态为2,3======》0为初始状态不能访问正常页面
         //状态3仅登录时修改，以此访问登录处理页面，防止路由传参，undefined错误
@@ -63,18 +60,19 @@ class LoginContainer extends React.Component{
         justifyContent:'center',
         alignItems:'center',
         width: '100%',
-        height: "100%",
+        height: "100vh",
         justifyItems:'center',
         backgroundSize:'cover',
 
 
     };
     const loginWarpStyle={
-        color:'#ffffff',
-        marginTop:'100px',
+
+        fontWeight:'bold',
+        marginTop:'60px',
         width:'600px',
         // height:'420px',
-        backgroundColor:'rgb(151,88,14)',
+
         display: 'block'
     };
     const infoPaddingStyle={
@@ -85,15 +83,15 @@ class LoginContainer extends React.Component{
         height:'35px',
         fontWeight:'bold',
         // backgroundColor: 'rgb(113,55,35)',
-        color: '#FFFFFF',
+
         border:'none',
         borderRadius: '4px'
 
     };
     const inputStyle={
         width:'300px',
-        height:'25px',
-        borderRadius:'4px',
+        height:'28px',
+
 
     };
   let tag;
@@ -101,7 +99,7 @@ class LoginContainer extends React.Component{
     return <div style={bodyStyle} id={'bg'}>
         <div style={loginWarpStyle} id='login'>
             <div style={infoPaddingStyle}>
-                <div style={{textAlign:"center",fontSize:'28px'}}>淘票后台系统登录</div>
+                <div style={{textAlign:"center",fontSize:'28px',fontWeight:'bold'}}>淘票后台系统登录</div>
                 <div>
                     <form >
                         <div  style={{textAlign:'right'}}>
@@ -147,6 +145,6 @@ class LoginContainer extends React.Component{
 
 }
 const mapStateToProps=state=>({
-    loginprivate:state.loginprivate
+    loginPrivate:state.loginPrivate
 })
 export default connect(mapStateToProps)(LoginContainer);

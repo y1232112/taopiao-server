@@ -1,19 +1,19 @@
 import {LOGIN_PRIVITE_GET, LOGIN_PRIVITE_INIT, LOGIN_PRIVITE_SKIP} from "../constants/actionTypes";
 
 const iniState={
-    loginpivate:0
+    loginPrivate:0
 };
-const loginprivate=(state=iniState.loginpivate,action)=>{
+const loginPrivate=(state=iniState.loginPrivate,action)=>{
     switch (action.type) {
         case LOGIN_PRIVITE_INIT:
-            return action.loginprivate;
+            return action.loginPrivate;
         case LOGIN_PRIVITE_GET:
-            return action.loginprivate;
+            return action.loginPrivate;
         case LOGIN_PRIVITE_SKIP:
-            return action.loginprivate;
+            return action.loginPrivate;
         default:
             return state;
 
     }
 }
-export default loginprivate;
+export default loginPrivate;

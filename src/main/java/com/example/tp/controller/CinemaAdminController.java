@@ -2,6 +2,7 @@ package com.example.tp.controller;
 
 import com.example.tp.service.CinemaAdminService;
 import com.example.tp.service.CinemaService;
+import com.example.tp.service.FilmService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +14,17 @@ public class CinemaAdminController {
     @Autowired
     private CinemaAdminService cinemaAdminService;
     @RequestMapping(value = "/cinemaAdminList/{id}",method = RequestMethod.GET)
-    public String getByadmin(@PathVariable Integer id) throws JsonProcessingException {
+    public String getByAdmin(@PathVariable Integer id) throws JsonProcessingException {
         ObjectMapper mapper=new ObjectMapper();
-        String jstr=mapper.writeValueAsString(cinemaAdminService.getCinemaAdminByid(id));
-        return jstr;
+        String json=mapper.writeValueAsString(cinemaAdminService.getCinemaAdminByid(id));
+        return json;
     }
-    @RequestMapping(value = "/cinemaAdminList/",method = RequestMethod.GET)
+    @RequestMapping(value = "/cinemaAdminList",method = RequestMethod.GET)
     public String getAllCinemaAdmin() throws JsonProcessingException {
         ObjectMapper mapper=new ObjectMapper();
         String json;
         json=mapper.writeValueAsString(cinemaAdminService.getAllCinemaAdmin());
         return json;
     }
+
 }

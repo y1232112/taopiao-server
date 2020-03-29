@@ -137,7 +137,7 @@ public class UserController {
      * @return
      * @throws JsonProcessingException
      */
-    @RequestMapping(value = "/doRegist",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/doRegister",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String doRegist(@RequestBody String json ) throws JsonProcessingException {
 //        创建mapper对象

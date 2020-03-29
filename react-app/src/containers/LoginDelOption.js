@@ -2,9 +2,7 @@ import React from "react";
 import Axios from "axios";
 import {cinemaAdminLoginApi, sysLoginApi} from "../apis/api";
 import {setCookie} from "../utils/cookieUtils";
-import {loginGet, loginSkip} from "../actions";
-import {store} from "../index";
-import * as types from "../constants/actionTypes";
+
 import {connect} from "react-redux";
 
 class LoginDelOption extends React.Component{
@@ -55,8 +53,8 @@ class LoginDelOption extends React.Component{
                         let msg = response.data.message;
                         console.log('---response--message----',msg);
                         if (msg == '操作成功') {
-                            setCookie("sadmin", admin, 20);
-                            setCookie("spassword", password, 20);
+                            setCookie("SYS_ADMIN", admin, 20);
+                            setCookie("SYS_PASSWORD", password, 20);
 
                             // this.props.history.push('/sysadmin');
                             alert('登录成功');
@@ -83,8 +81,8 @@ class LoginDelOption extends React.Component{
                         let msg = response.data.message;
                         alert(msg);
                         if (msg == '操作成功') {
-                            setCookie("cadmin", admin, 20);
-                            setCookie("cpassword", password, 20);
+                            setCookie("CINEMA_ADMIN", admin, 20);
+                            setCookie("CINEMA_PASSWORD", password, 20);
                             // this.props.history.push('/sysadmin');
                             routerSkip(msg,Tag);
                         }
@@ -112,6 +110,6 @@ class LoginDelOption extends React.Component{
 
 }
 const mapStateToProps=state=>({
-    loginprivate:state.loginpivate
+    loginPrivate:state.loginPrivate
 })
 export default connect(mapStateToProps) (LoginDelOption);

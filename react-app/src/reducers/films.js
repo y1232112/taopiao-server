@@ -4,11 +4,10 @@ const initState={
     films:[],
 }
 const films=(state=initState.films, action)=>{
-    switch (action.type) {
-        case RECEIVE_FILMS:
-            return action.films;
-        default:
-            return state
+    if (action.type === RECEIVE_FILMS) {
+        return action.films;
+    } else {
+        return state
     }
 }
 export default films;

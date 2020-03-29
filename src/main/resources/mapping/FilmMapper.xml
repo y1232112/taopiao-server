@@ -11,4 +11,70 @@
     <select id="getAllFilm" resultType="hashmap">
         select * from film
     </select>
+<!--    添加电影-->
+    <insert id="addFilm" parameterType="com.example.tp.entity.Film" useGeneratedKeys="true" keyProperty="filmId">
+    <if test="publicDate!=''">
+        insert into film(film_name,film_length,product_area,director,status,brief,type,public_date,wish_num,score,actor,img)
+   values (#{filmName},#{filmLength},#{productArea},#{director},#{status},#{brief},#{type},#{publicDate},#{wishNum},#{score},#{actor},#{img})
+    </if>
+    <if test="publicDate==''">
+        insert into film(film_name,film_length,product_area,director,status,brief,type,wish_num,score,actor,img)
+        values (#{filmName},#{filmLength},#{productArea},#{director},#{status},#{brief},#{type},#{wishNum},#{score},#{actor},#{img})
+
+    </if>
+    </insert>
+<!--    根据id删除电影-->
+    <delete id="deleteFilmById" timeout="20">
+        delete from film where film_id=#{id}
+    </delete>
+    <!--    根据影员id数组批量删除-->
+    <!--    item代表集合中的每一项-->
+    <delete id="deleteFilmByIds" parameterType="java.lang.Integer">
+        delete from film where film_id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </delete>
+<!--    修改影片信息-->
+<!--    <update id="modifyFilm" parameterType="com.example.tp.entity.Film">-->
+<!--        update film-->
+<!--        set film_name=#{filmName},film_length=#{filmLength},product_area=#{productArea},director=#{director},status=#{status},brief=#{brief},type=#{type},public_date=#{publicDate},wish_num=#{wishNum},score=#{score},actor=#{actor},img=#{img}-->
+<!--        where film_id=#{filmId}-->
+<!--    </update>-->
+    <update id="modifyFilm" parameterType="com.example.tp.entity.Film">
+        update film
+        set film_name=#{filmName},film_length=#{filmLength},product_area=#{productArea},director=#{director},status=#{status},brief=#{brief},type=#{type},public_date=#{publicDate},wish_num=#{wishNum},score=#{score},actor=#{actor},img=#{img}
+        where film_id=#{filmId}
+    </update>
+    <!--    查询数据长度-->
+    <select id="getFilmCount" resultType="java.lang.Integer">
+        select count(*) from film
+    </select>
+    <!--    插叙区间-->
+    <select id="getFilmPage" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from film LIMIT #{start},#{pageSize}
+    </select>
+<!--    查询-->
+    <select id="searchFilm" parameterType="java.lang.String" resultType="hashmap">
+        select * from film
+        <where>
+            <if test="film_name !='' and film_name !=null">
+                film_name like "%${film_name}%"
+            </if>
+            <if test="director !='' and director !=null">
+                and director like "%${director}%"
+            </if>
+            <if test="status !='' and status !=null">
+                and status like "%${status}%"
+            </if>
+            <if test="product_area !='' and product_area !=null">
+                and product_area like "%${product_area}%"
+            </if>
+            <if test="type !='' and type !=null">
+                and type like "%${type}%"
+            </if>
+        </where>
+
+
+    </select>
 </mapper>

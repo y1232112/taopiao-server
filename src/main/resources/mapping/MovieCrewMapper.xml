@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.MovieCrewMapper">
+    <!-- 根据主键查询-->
+    <select id="getById" resultType="com.example.tp.entity.MovieCrew" parameterType="java.lang.Integer">
+        select *
+        from movie_crew
+        where movie_crew_id = #{id}
+    </select>
+    <select id="getAllMovieCrew" resultType="hashmap">
+        select * from movie_crew
+    </select>
+<!--    添加影员-->
+    <insert id="addMovieCrew" parameterType="com.example.tp.entity.MovieCrew" useGeneratedKeys="true" keyProperty="movieCrewId">
+        insert into movie_crew(movie_crew_name,img) values (#{movieCrewName},#{img})
+    </insert>
+<!--    根据id 删除影员  -->
+    <delete id="deleteMovieCrewById"  >
+        delete from movie_crew where movie_crew_id=#{id}
+    </delete>
+<!--    根据影员id数组批量删除-->
+<!--    item代表集合中的每一项-->
+    <delete id="deleteMovieCrewByIds" parameterType="java.lang.Integer">
+        delete from movie_crew where movie_crew_id in 
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </delete>
+<!--    修改影院信息   编辑-->
+    <update id="modifyMovieCrew" parameterType="com.example.tp.entity.MovieCrew">
+        update movie_crew
+        set movie_crew_name=#{movieCrewName},img=#{img}
+      where movie_crew_id=#{movieCrewId}
+    </update>
+<!--    查询数据长度-->
+    <select id="getMovieCrewCount" resultType="java.lang.Integer">
+        select count(*) from movie_crew
+    </select>
+<!--    插叙区间-->
+    <select id="getMovieCrewPage" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from movie_crew LIMIT #{start},#{pageSize}
+    </select>
+<!--    查询-->
+    <select id="searchMovieCrew" parameterType="java.lang.String" resultType="hashmap">
+        select * from movie_crew
+        <where>
+            <if test="movie_crew_name !='' and movie_crew_name !=null">
+                movie_crew_name like "%${movie_crew_name}%"
+            </if>
+        </where>
+
+    </select>
+</mapper>
