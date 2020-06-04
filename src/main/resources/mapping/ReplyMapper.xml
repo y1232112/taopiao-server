@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.ReplyMapper">
+    <insert id="addReply" parameterType="com.example.tp.entity.Reply" useGeneratedKeys="true" keyProperty="id">
+
+
+            insert into user_reply(comment_id,reply_type,content,from_uid,to_uid,reply_date)
+            values (#{commentId},#{replyType},#{content},#{fromUid},#{toUid},#{replyDate})
+
+
+    </insert>
+    <select id="selectReply"  resultType="hashmap">
+        select r.id,r.comment_id,r.reply_type,r.content,r.from_uid,r.to_uid,r.reply_date,u.nick_name,u.avatar
+         ,(select status from zan where zan.type=2 and zan.u_id=#{user_id} and zan.o_id=r.id and zan.status=1 ) as my_zan
+         ,(select count(*) from zan where zan.type=2 and zan.o_id=r.id and zan.status=1) as zan_nums
+         from user_reply as r,user_info as u
+        where r.comment_id=#{comment_id} and r.from_uid=u.user_id
+    </select>
+
+</mapper>

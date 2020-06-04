@@ -45,6 +45,7 @@ public class MovieCrewController {
     public String addMovieCrew(@RequestBody String receiveJson) throws JsonProcessingException {
         MovieCrew movieCrew=new MovieCrew();
         movieCrew.setMovieCrewName(JsonUtils.getFormJson(receiveJson,"movie_crew_name"));
+        movieCrew.setSex(JsonUtils.getFormJson(receiveJson,"sex"));
         movieCrew.setImg(JsonUtils.getFormJson(receiveJson,"img"));
         int num=movieCrewService.addMovieCrew(movieCrew);
         if (num>0){
@@ -103,7 +104,11 @@ public class MovieCrewController {
         MovieCrew movieCrew=new MovieCrew();
        movieCrew.setMovieCrewId(Integer.parseInt(JsonUtils.getFormJson(receiveJson,"movie_crew_id")));
        movieCrew.setMovieCrewName(JsonUtils.getFormJson(receiveJson,"movie_crew_name"));
-        movieCrew.setImg(JsonUtils.getFormJson(receiveJson,"img"));
+
+        movieCrew.setSex(JsonUtils.getFormJson(receiveJson,"sex"));
+        if (!JsonUtils.getFormJson(receiveJson,"img").equals("")){
+            movieCrew.setImg(JsonUtils.getFormJson(receiveJson,"img"));
+        }
 //
         int num= movieCrewService.modifyMovieCrew(movieCrew);
         if (num>0){

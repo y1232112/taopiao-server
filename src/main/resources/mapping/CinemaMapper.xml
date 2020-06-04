@@ -58,4 +58,92 @@
 
         </where>
     </select>
+    <select id="searchCinemaBycityCount" parameterType="java.lang.String" resultType="hashmap">
+       select c.cinema_id,c.cinema_name,c.province,c.city,c.county,c.address,c.notice,
+         (select serve_type from  serve where serve_type="3D眼镜" and c.cinema_id=serve.cinema_id) as serve_03,
+         (select serve_type from  serve where serve_type="改签" and c.cinema_id=serve.cinema_id) as serve_02,
+         (select serve_type from  serve where serve_type="退" and c.cinema_id=serve.cinema_id) as serve_01,
+         (select hall_type from hall  where hall_type="IMAX厅" and c.cinema_id=hall.cinema_id) as IMAX,
+          (select hall_type from hall where hall_type="CGS中国巨幕厅" and c.cinema_id=hall.cinema_id) as 中国巨幕厅,
+            (select hall_type from hall where hall_type="杜比全景声厅" and c.cinema_id=hall.cinema_id) as 杜比全景声厅,
+             (select hall_type from hall where hall_type="RealD厅" and c.cinema_id=hall.cinema_id) as RealD厅,
+               (select hall_type from hall where hall_type="LUXE巨幕厅" and c.cinema_id=hall.cinema_id) as LUXE巨幕厅,
+               (select hall_type from hall where hall_type="4D厅" and c.cinema_id=hall.cinema_id) as 4D厅,
+               (select hall_type from hall where hall_type="巨幕厅" and c.cinema_id=hall.cinema_id) as 巨幕厅,
+               (select count(*) from snacks where c.cinema_id=snacks.cinema_id) as snack
+        from cinemas as c
+        where county like "%${county}%" and city=#{city}
+    </select>
+<!--    链接查询-->
+    <select id="selectAssignInfo" resultType="hashmap">
+        select cinemas.cinema_id,cinema_name,cinema_admin.cinema_admin_id,nick_name,assignTime
+        from cinemas,assign,cinema_admin
+        where cinema_admin.cinema_admin_id=assign.cinema_admin_id
+        and assign.cinema_id=cinemas.cinema_id
+
+    </select>
+<!--    -->
+<!--       查询未分配的影院信息-->
+       <select id="selectCinemaNoAssign" resultType="hashmap">
+           select *
+           from cinemas
+           left join assign on cinemas.cinema_id=assign.cinema_id where assign.cinema_id is null
+       </select>
+<!--    根据管理员id查询管理员对应的影院信息-->
+    <select id="selectCinemaByAdminId" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from cinemas
+        where cinemas.cinema_id
+        = (select assign.cinema_id from assign,cinema_admin
+        where assign.cinema_admin_id=cinema_admin.cinema_admin_id
+        and cinema_admin.cinema_admin_id=#{id})
+    </select>
+<!--    获得公告-->
+    <select id="getNotice" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select notice from cinemas
+        where cinema_id=#{id}
+    </select>
+<!--    跟新公告-->
+    <update id="updateNotice">
+        update cinemas
+        set notice=#{notice}
+        where cinema_id=#{id}
+    </update>
+    <select id="selectCinemasAndServeByCity" parameterType="java.lang.String" resultType="hashmap">
+        select c.cinema_id,c.cinema_name,c.province,c.city,c.county,c.address,c.notice,
+         (select serve_type from  serve where serve_type="3D眼镜" and c.cinema_id=serve.cinema_id) as serve_03,
+         (select serve_type from  serve where serve_type="改签" and c.cinema_id=serve.cinema_id) as serve_02,
+         (select serve_type from  serve where serve_type="退" and c.cinema_id=serve.cinema_id) as serve_01,
+         (select hall_type from hall  where hall_type="IMAX厅" and c.cinema_id=hall.cinema_id) as IMAX,
+          (select hall_type from hall where hall_type="CGS中国巨幕厅" and c.cinema_id=hall.cinema_id) as 中国巨幕厅,
+            (select hall_type from hall where hall_type="杜比全景声厅" and c.cinema_id=hall.cinema_id) as 杜比全景声厅,
+             (select hall_type from hall where hall_type="RealD厅" and c.cinema_id=hall.cinema_id) as RealD厅,
+               (select hall_type from hall where hall_type="LUXE巨幕厅" and c.cinema_id=hall.cinema_id) as LUXE巨幕厅,
+               (select hall_type from hall where hall_type="4D厅" and c.cinema_id=hall.cinema_id) as 4D厅,
+               (select hall_type from hall where hall_type="巨幕厅" and c.cinema_id=hall.cinema_id) as 巨幕厅,
+               (select count(*) from snacks where c.cinema_id=snacks.cinema_id) as snack
+        from cinemas as c
+        where city=#{city}
+    </select>
+    <select id="selectCinemasAndServeById" parameterType="java.lang.Integer" resultType="hashmap">
+        select c.cinema_id,c.cinema_name,c.province,c.city,c.county,c.address,c.notice,ca.phone
+
+        from cinemas as c,assign as a,cinema_admin as ca
+        where c.cinema_id=#{id} and a.cinema_id=c.cinema_id and a.cinema_admin_id=ca.cinema_admin_id
+    </select>
+   <select id="havefilmScheduleCinemas" resultType="hashmap">
+       select distinct c.cinema_id,c.cinema_name,c.province,c.city,c.county,c.address,c.notice,
+         (select serve_type from  serve where serve_type="3D眼镜" and c.cinema_id=serve.cinema_id) as serve_03,
+         (select serve_type from  serve where serve_type="改签" and c.cinema_id=serve.cinema_id) as serve_02,
+         (select serve_type from  serve where serve_type="退" and c.cinema_id=serve.cinema_id) as serve_01,
+         (select hall_type from hall  where hall_type="IMAX厅" and c.cinema_id=hall.cinema_id) as IMAX,
+          (select hall_type from hall where hall_type="CGS中国巨幕厅" and c.cinema_id=hall.cinema_id) as 中国巨幕厅,
+            (select hall_type from hall where hall_type="杜比全景声厅" and c.cinema_id=hall.cinema_id) as 杜比全景声厅,
+             (select hall_type from hall where hall_type="RealD厅" and c.cinema_id=hall.cinema_id) as RealD厅,
+               (select hall_type from hall where hall_type="LUXE巨幕厅" and c.cinema_id=hall.cinema_id) as LUXE巨幕厅,
+               (select hall_type from hall where hall_type="4D厅" and c.cinema_id=hall.cinema_id) as 4D厅,
+               (select hall_type from hall where hall_type="巨幕厅" and c.cinema_id=hall.cinema_id) as 巨幕厅,
+               (select count(*) from snacks where c.cinema_id=snacks.cinema_id) as snack
+        from cinemas as c,schedule as s
+        where c.city=#{city} and c.cinema_id=s.cinema_id and s.film_id=#{film_id} and s.show_date <![CDATA[>=]]>#{date}
+   </select>
 </mapper>

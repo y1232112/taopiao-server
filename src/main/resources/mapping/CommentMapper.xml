@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.CommentMapper">
+    <!-- 根据主键查询-->
+    <insert id="addComment" parameterType="com.example.tp.entity.Comment" useGeneratedKeys="true" keyProperty="id">
+
+         insert into user_comment(t_id,type,score,content,from_uid,comment_date)
+         values (#{tId},#{type},#{score},#{content},#{fromUid},#{commentDate})
+
+
+
+    </insert>
+    <select id="selectComent" parameterType="java.lang.Integer" resultType="hashmap">
+        select c.id,c.t_id,c.type,c.score,c.content,c.from_uid,c.comment_date,u.nick_name,u.avatar,
+        (select count(*) from user_reply as r where r.comment_id=c.id and r.reply_type=1) as reply_nums,
+        (select count(*) from zan where zan.o_id=c.id and zan.type=1 and zan.status=1) as zan_nums,
+        (select status from zan where zan.o_id=c.id and zan.u_id=#{user_id} and zan.type=1) as my_zan
+        from user_comment as c,
+        user_info as u
+        where t_id=#{t_id} and type=#{type} and u.user_id=c.from_uid
+
+    </select>
+<!--查询一条评论的 点赞数 回复数 以及目标用户的点赞状态-->
+    <select id="selectZandReply" parameterType="java.lang.Integer" resultType="hashmap">
+        select zan.o_id,zan.type,zan.status as my_zan,
+        (select count(*) from zan where zan.o_id=#{o_id} and type=#{type} and zan.status=1) as zan_nums,
+        (select count(*) from user_reply as r where r.comment_id=#{o_id} and r.reply_type=1 ) as reply_nums
+        from zan
+        where zan.o_id=#{o_id} and zan.u_id=#{u_id} and type=#{type}
+
+    </select>
+     <select id="selectHasMyFilmComment" parameterType="com.example.tp.entity.Comment"  resultType="java.lang.Integer">
+         select uc.t_id user_comment as uc
+         where uc.t_id=#{tId} and uc.type={type} and uc.from_uid=#{fromUid}
+
+     </select>
+    <select id="selectMyCommentInfoForOneFilm" parameterType="com.example.tp.entity.Comment" resultType="hashmap">
+        select * from user_comment as uc
+        where uc.t_id=#{tId} and uc.type=#{type} and uc.from_uid=#{fromUid}
+    </select>
+    <update id="upMycomment" parameterType="com.example.tp.entity.Comment">
+        update user_comment
+        set score=#{score},content=#{content},comment_date=#{commentDate}
+        where t_id=#{tId} and type=#{type} and from_uid=#{fromUid}
+    </update>
+    <delete id="deleteMycomment" parameterType="com.example.tp.entity.Comment">
+        delete from user_comment
+        where t_id=#{tId} and type=#{type} and from_uid=#{fromUid}
+    </delete>
+
+</mapper>

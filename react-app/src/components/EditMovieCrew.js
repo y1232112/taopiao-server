@@ -1,10 +1,25 @@
 import React from "react";
-import {getAllMovieCrew, getCinemaPage, getDelete, getFilmPage, getMovieCrewPage, postEdit} from "../apis/data";
-import {deleteMovieCrewApi, modifyMovieCrewApi, movieCrewListApi} from "../apis/api";
+import {
+    getAllMovieCrew,
+    getCinemaPage,
+    getDelete,
+    getFilmPage,
+    getMovieCrewPage,
+    postEdit,
+    postUploadImg
+} from "../apis/data";
+import {deleteMovieCrewApi, modifyMovieCrewApi, movieCrewListApi, postUploadImgApi} from "../apis/api";
 import * as sysType from "../constants/const";
 import $ from "jquery";
 import {store} from "../index";
-import {checkedList, getCinemaPageInfo, getMovieCrewPageInfo, receiveCinemas, receiveMovieCrew} from "../actions";
+import {
+    checkedList,
+    getCinemaPageInfo,
+    getMovieCrewPageInfo,
+    receiveCinemas,
+    receiveMovieCrew, receivePostImgUrl,
+    receiveUploadImgUrl
+} from "../actions";
 import {connect} from "react-redux";
 import * as API from "../apis/api";
 import alert from "../utils/alert";
@@ -27,31 +42,69 @@ class EditMovieCrew extends React.Component{
 //             return true
 //         }else return false
 // }
+    renderOpacity=()=>{
+        if (this.props.upUrl==""||this.props.upUrl==undefined){
+            return 0;
+        }else {
+            return 1;
+        }
+    }
 
-    /**
-     * [obj].map=>(data=>.....<td>..onclick={()=this....(param1(...,data))}
-     * 此时窜的参数data,函数处理时只能拿到第一个遍历对象的值
-     * [obj].map=>(data=>.....<td>..onclick={()=this....(param1(...,{data}))}
-     * 参数多了一个括号{data}，顺利拿到了当前值console为data:{......}
-     * 处理编辑时的弹窗，把map遍历到的、当前点击的data对象闯过来进行遍历
-     * 这里设置了state,把table选中行存入state..<div>...<div>
-     * 同时更新弹窗标记，设其为true，使其弹窗，便于编辑
-     * 编辑完毕时，点击去取消onclick事件，setstate....isdialog为false，同时也应该还原state的弹窗的内容setstate...<div><div>
-     * 否侧接下来每一次编辑时会弹出第一次弹出的编辑文档，而不是当前的遍历对象，或者说是当前记录行
-     * map遍历dom虚拟文档时，当前遍历对象（data)
-     * @param Tag
-     * @param data
-     */
+    handleChangeImg=(e)=> {
+        store.dispatch(receiveUploadImgUrl(""));
+        console.log("file:",e.target.files[0],e.target.result)
+        let file=e.target.files[0];
+        let getUrl = null;
+        const windowURL = window.URL || window.webkitURL;//实现预览
+        if (window.createObjectURL != undefined) { // basic
+            getUrl = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            getUrl = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            getUrl = window.webkitURL.createObjectURL(file);
+            formData.append('img',file);
+        }
+        console.log("url file",getUrl)
+        $("#preview").attr('src',getUrl)
+        store.dispatch(receiveUploadImgUrl(getUrl))
+
+        console.log("图片大小",file.size)
+        // $("#preview").attr("src",getUrl)
+
+        if (file.size > 102400) {
+            alert('不能上传大于100k的图片')
+            return;
+        }
+        let formData = new FormData();
+        formData.append('uploadFile',file,file.name)// 通过append向form对象添加数据,可以通过append继续添加数据
+
+        postUploadImg(postUploadImgApi,formData)
+
+
+
+    }
+
+
+    handleCancelEdit=()=>{
+        this.setState({isDialog:false,dialogShow:<div></div>})
+        $("#input_file").val("");
+        store.dispatch(receiveUploadImgUrl(""))
+    }
     handleClick1(data){
+
         // {console.log('---------------',data)}
         this.setState({
-            dialogShow:  <div id={'dialogWrap'} style={{width:'50%',margin:'0 auto'}}>
-                <div style={{textAlign:'center',fontWeight:'bold'}}>编辑您的选项</div>
-                <div><label style={{width:'40%'}} className={'dialogLabel'}>影员ID：</label><input id={'edit1'} value={data.data.movie_crew_id} className={'dialogInput1'}/></div>
+            dialogShow:  <div id={'dialogWrap'} style={{width:'322px',margin:'0 auto'}}>
+                <div id={"edit_style"}>
+                <div><label  className={'dialogLabel'}>影员ID：</label><input id={'edit1'} value={data.data.movie_crew_id} className={'dialogInput1'}/></div>
                 <div><label className={'dialogLabel'}>影员名称：</label><input id={'edit2'} className={'dialogInput'} defaultValue={data.data.movie_crew_name}/></div>
-                <div><label className={'dialogLabel'}>影员照片：</label><input id={'edit3'} className={'dialogInput'}  defaultValue={data.data.img}/></div>
+                    <div><label className={'dialogLabel'}>性别：</label><input id={'edit3'} className={'dialogInput'} defaultValue={data.data.sex}/></div>
 
-
+                    <div><label className={'dialogLabel'}>影员照片：</label>    </div>
+                    <div style={{border:'#777 1px solid',width:'80px',height:'100px',marginLeft:'120px'}}>
+                        {(data.data.img=="null"||data.data.img==null||data.data.img.trim()=='')?<img id={"img_1"} src={''} width={'80px'} height={'100px'}
+                                                                                                     style={{opacity:'0'}}/>:<img id={"img_1"} src={data.data.img} width={'80px'} height={'100px'}/>}</div>
+                </div>
             </div>
 
         });
@@ -67,8 +120,9 @@ class EditMovieCrew extends React.Component{
        this.setState({
            isDeleteDialog:true,
            deleteKey:key,
-           clickPageX:e.pageX-60+'px',
-           clickPageY:e.pageY-25+'px'
+           clickPageX:e.pageX-120+'px',
+           clickPageY:e.pageY-25+'px',
+           dialogShow:<div></div>,
        })
 
         // console.log('-------my---key-----',key)
@@ -84,21 +138,33 @@ class EditMovieCrew extends React.Component{
     }
     //提交编辑
     handleEdit=async ()=>{
+         if ($("#edit3").val().trim()!=="男"&&$("#edit3").val().trim()!=="女"){
+             alert("请输入正确的性别");
+             return ;
+
+         }
+         let url=this.props.postImgUrl==""?$("#img_1").attr("src"):this.props.postImgUrl;
+         console.log("-------post img src url",this.props.postImgUrl)
+        console.log("-------post img src ",url)
 
         let json={
             "version":sysType.VERSION,
             "params":{
-                movie_crew_id:$("#edit1").val(),
-                movie_crew_name:$("#edit2").val(),
-               img:$("#edit3").val()
+                movie_crew_id:$("#edit1").val().trim(),
+                movie_crew_name:$("#edit2").val().trim(),
+                sex:$("#edit3").val().trim(),
+               img:url
             }
         }
 
        await postEdit(modifyMovieCrewApi,json)
      // getAllMovieCrew(movieCrewListApi)
         getMovieCrewPage(API.movieCrewPageApi,this.props.pageInfo.currentPage,this.props.pageInfo.pageSize)
-        this.setState({isDialog:false})
+        this.setState({isDialog:false,dialogShow:<div></div>})
 
+store.dispatch(receivePostImgUrl(""))
+        store.dispatch(receiveUploadImgUrl(""))
+        $("#input_file").val("");
 
     }
     //监听性选择Box
@@ -143,7 +209,7 @@ class EditMovieCrew extends React.Component{
             return 'none'
         }
         else {
-            return 'block'
+            return 'flex'
         }
     }
     handleClickSpanNumber=(e)=>{
@@ -216,6 +282,12 @@ class EditMovieCrew extends React.Component{
             }
         }
     }
+    //渲染当页的菜单
+    handleChangePage=(item)=>{
+        if (item===this.props.pageInfo.currentPage){
+            return {backgroundColor:"#80000d",color:"#ffffff",padding:"6px 10px"}
+        }else return {padding:"6px 10px"}
+    }
     //条件渲染的分页
     doRenderForPage=()=>{
         let arr=[];
@@ -228,34 +300,41 @@ class EditMovieCrew extends React.Component{
             for (let i=1;i<=tp;i++){
                 arr.push(i)
             }
-            return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+            return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
         }else if (11>=tp>8){
 
             if ((tp/2)>t){
                 arr=[1,2,3,4,5,6,7,8]
-                return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                    onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
             }else {
                 arr=[4,5,6,7,8,9,10,11]
-                return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)}
+                return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                    onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)}
         }else if (tp>11){
             if ((tp/2)>=t){
 
                 if (t>=3){
                     arr=[t-2,t-1,t,t+1,t+2,t+3,t+4,t+5]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }else {
                     arr=[1,2,3,4,5,6,7,8]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }
             }else if ((tp/2)<t){
 
 
                 if (tp-2>=t){
                     arr=[t-5,t-4,t-3,t-2,t-1,t,t+1,t+2]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }else {
                     arr=[tp-7,tp-6,tp-5,tp-4,tp-3,tp-2,tp-1,tp]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }
             }
 
@@ -313,16 +392,15 @@ class EditMovieCrew extends React.Component{
         }else alert("请输入数字")
     }
     render() {
-        // console.log('---props---datasource--edt mc---',this.props.DataSource)
+        console.log('---props---post img url-----',this.props.postImgUrl)
 
         const  dialogStyle={
-            width:'50%',
-            height:'70%',
+            width:'100%',
+            height:'100%',
             zIndex:'9999',
             position:'fixed',
-            top:'80px',
-            left:'25%',
-            backgroundColor:'#ffffff',
+            top:0,
+            left:0,
 
             display:this.dialog(this.state.isDialog)
         }
@@ -360,7 +438,10 @@ class EditMovieCrew extends React.Component{
                 <td><input onChange={(event) => this.handleChangeBox(event,this.state.checkBoxList)} type={'checkbox'} value={data.movie_crew_id}/></td>
                 <td>{data.movie_crew_id}</td>
                 <td>{data.movie_crew_name}</td>
-                <td>{data.img}</td>
+            <td>{data.sex}</td>
+                <td>{(data.img=="null"||data.img==null||data.img.trim()=='')?<img src={''} width={'50px'} height={'60px'}
+                                                                                  style={{opacity:'0'}}/>:<img src={data.img} width={'50px'}
+                                                                                                               height={'60px'}/>}</td>
 
                 <td ><a className={'click'} onClick={()=>this.handleClick1({data})}>编辑</a>
                     <a id={key++} style={{marginLeft:'5px'}} className={'click'}
@@ -404,11 +485,33 @@ class EditMovieCrew extends React.Component{
             </div>
             {/**************************************编辑时弹窗**********************************************8*/}
             <div style={dialogStyle} id={'dialog'}>
-                <div style={{margin:'0',padding:'0',width:'100%',height:'100%',position:'relative'}}>
-                    {this.state.dialogShow}
-                    <div style={{position:'absolute',bottom:'35px',width:'100%',display:'block',textAlign:'center'}}>
+                <div className={"wrap_edt_movieCrew_dialog"}>
+                    <div style={{textAlign:'center',fontWeight:'bold'}}>编辑您的选项</div>
+                    <div style={{ overflowY:'scroll',height:'250px'}}>{this.state.dialogShow}</div>
+                    <div style={{width:'100%',display:'block',textAlign:'center',paddingTop:'15px',backgroundColor:'#efefef'}}>
+
+                        <div><label >更换及预览图片：</label>
+
+                            <input
+                                onChange={(e)=>this.handleChangeImg(e)}
+                                id={'input_file'}
+                                className={'addInput'} type={'file'} name={'img'} multiple={'multiple'}
+                                accept={"image/gif,image/jpeg,image/jpg,image/png,image/svg"}/>
+
+
+
+                        </div>
+
+                        <div>
+                            <div style={{border:'1px solid #777',width:'80px',height:'100px',marginLeft:'100px',backgroundColor:'#fff'}}>
+                                {console.log("url"+this.props.postImgUrl,this.props.upUrl)}
+                                <img style={{opacity:this.renderOpacity()}} id={'preview'} src={this.props.upUrl} id={'img0'} width={'80px'} height={'100px'}/>
+
+                            </div>
+
+                        </div>
                         <button onClick={()=>this.handleEdit()} className={'dbutton'}>确认</button>
-                        <button onClick={()=>this.setState({isDialog:false,dialogShow:<div></div>})} className={'dbutton'}>取消</button>
+                        <button onClick={()=>this.handleCancelEdit()} className={'dbutton'}>取消</button>
                     </div>
                 </div>
             </div>
@@ -432,6 +535,8 @@ class EditMovieCrew extends React.Component{
 const mapStateToProps=state=>({
     pageInfo:state.movieCrewPageInfo,
     queryStatusMovieCrew: state.queryStatusMovieCrew,
-    queryMovieCrewList: state.queryMovieCrewList
+    queryMovieCrewList: state.queryMovieCrewList,
+    upUrl: state.upUrl,
+    postImgUrl: state.postImgUrl
 })
 export default connect(mapStateToProps) (EditMovieCrew);

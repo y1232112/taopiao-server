@@ -2,16 +2,16 @@ package com.example.tp.entity;
 
 public class Film {
     private Integer filmId;
+
     private String filmName;
     private String filmLength;
     private String productArea;
     private String director;
-    private String status;
+
     private String brief;
     private String type;
     private String publicDate;
-    private String wishNum;
-    private String score;
+    private String endDate;
     private String actor;
     private String img;
 
@@ -22,6 +22,8 @@ public class Film {
     public void setFilmId(Integer filmId) {
         this.filmId = filmId;
     }
+
+
 
     public String getFilmName() {
         return filmName;
@@ -55,13 +57,7 @@ public class Film {
         this.director = director;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getBrief() {
         return brief;
@@ -87,20 +83,12 @@ public class Film {
         this.publicDate = publicDate;
     }
 
-    public String getWishNum() {
-        return wishNum;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setWishNum(String wishNum) {
-        this.wishNum = wishNum;
-    }
-
-    public String getScore() {
-        return score;
-    }
-
-    public void setScore(String score) {
-        this.score = score;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public String getActor() {
@@ -119,6 +107,8 @@ public class Film {
         this.img = img;
     }
 
+
+
     @Override
     public String toString() {
         return "Film{" +
@@ -127,12 +117,10 @@ public class Film {
                 ", filmLength='" + filmLength + '\'' +
                 ", productArea='" + productArea + '\'' +
                 ", director='" + director + '\'' +
-                ", status='" + status + '\'' +
                 ", brief='" + brief + '\'' +
                 ", type='" + type + '\'' +
                 ", publicDate='" + publicDate + '\'' +
-                ", wishNum='" + wishNum + '\'' +
-                ", score='" + score + '\'' +
+                ", endDate='" + endDate + '\'' +
                 ", actor='" + actor + '\'' +
                 ", img='" + img + '\'' +
                 '}';

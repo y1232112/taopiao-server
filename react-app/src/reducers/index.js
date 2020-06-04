@@ -18,6 +18,31 @@ import queryStatusMovieCrew from "./queryStatusMovieCrew";
 import movieCrewPageSize from "./movieCrewPageSize";
 import filmPageSize from "./filmPageSize";
 import cinemaPageSize from "./cinemaPageSize";
+import cinemaAdmins from "./cinemaAdmins";
+import cinemaAdminPageInfo from "./cinemaAdminPageInfo";
+import cinemaAdminPageSize from "./cinemaAdminPageSize";
+import queryStatusCinemaAdmin from "./queryStatusCinemaAdmin";
+import queryCinemaAdminList from "./queryCinemaAdminList";
+import noAssCinemaAdmin from "./noAssCinemaAdmin";
+import noAssCinemaAdminPageInfo from "./noAssCinemaAdminPageInfo";
+import queryNoAssAdminList from "./queryNoAssAdmin";
+import assignCinemaIds from "./assignCinemaIds";
+import assignCinemaAdminIds from "./assignCinemaAdminIds";
+import seatInfo from "./seatInfo";
+import cinemaAdmin from "./cinemaAdmin";
+import cinema from "./cinema";
+import halls from "./halls";
+import cinemaSeats from "./cinemaSeats";
+import currentHall from "./currentHall";
+import upUrl from "./upUrl";
+import postImgUrl from "./postImgUrl";
+import schedules from "./schedules";
+import myServe from "./myServe";
+import discountNumber from "./discountNumber";
+import originPrice from "./originPrice";
+import showItem from "./showItem";
+import mySnacks from "./mySnacks";
+import notice from "./notice";
 
 export default combineReducers(
    {
@@ -39,5 +64,30 @@ export default combineReducers(
        movieCrewPageSize,
        filmPageSize,
        cinemaPageSize,
+       cinemaAdmins,
+       cinemaAdminPageInfo,
+       cinemaAdminPageSize,
+       queryStatusCinemaAdmin,
+      queryCinemaAdminList,
+       noAssCinemaAdmin,
+       noAssCinemaAdminPageInfo,
+       queryNoAssAdminList,
+       assignCinemaIds,
+       assignCinemaAdminIds,
+       seatInfo,
+       cinemaAdmin,
+       cinema,
+       halls,
+       cinemaSeats,
+       currentHall,
+       upUrl,
+       postImgUrl,
+       schedules,
+       myServe,
+       discountNumber,
+       originPrice,
+       showItem,
+       mySnacks,
+       notice,
    }
 )

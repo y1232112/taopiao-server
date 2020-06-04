@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.AssignMapper">
+    <!-- 根据主键查询-->
+<!--    <select id="getById" resultType="cn.stephen.study.demoproject.entity.TestEntity" parameterType="java.lang.Integer">-->
+<!--        select *-->
+<!--        from test-->
+<!--        where id = #{id}-->
+<!--    </select>-->
+    <insert id="addAssignInfo"  parameterType="com.example.tp.entity.Assign" useGeneratedKeys="false">
+      insert into assign(cinema_id,cinema_admin_id,assign_time) values(#{cinemaId},#{cinemaAdminId},#{assignTime})
+    </insert>
+    <select id="selectAssignCinemaIds" resultType="java.lang.Integer">
+        select cinema_id from assign
+    </select>
+    <select id="selectAssignCinemaAdminIds" resultType="java.lang.Integer">
+        select cinema_admin_id from assign
+    </select>
+    <select id="selectAssignInfoByadmin" parameterType="java.lang.Integer" resultType="com.example.tp.entity.Assign">
+        select * from assign
+        where cinema_admin_id=#{cinemaAdminId}
+    </select>
+</mapper>

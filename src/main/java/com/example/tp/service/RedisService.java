@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
-@Service
+@Service(value="redisService")
 public class RedisService {
     @Autowired
     private RedisTemplate redisTemplate;
@@ -34,5 +34,14 @@ public class RedisService {
             redisTemplate.expire(key,3600, TimeUnit.SECONDS);//设置超时
         }
 
+    }
+    public String getTokenInRedis(String key){
+        boolean hasKey=redisTemplate.hasKey(key);
+        String result="";
+        if (hasKey){
+            result= (String) redisTemplate.opsForValue().get(key);
+        }
+
+        return result;
     }
 }

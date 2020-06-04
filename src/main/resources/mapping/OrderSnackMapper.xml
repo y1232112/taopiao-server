@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.OrderSnackMapper">
+
+  <insert id="addOrderSnack" parameterType="com.example.tp.entity.SnackOrder" useGeneratedKeys="true" keyProperty="orderId">
+      insert into order_sn (snack_id,user_id,order_phone,goods_num,order_date,total_price,pay_type,phone_code)
+      values (#{snackId},#{userId},#{orderPhone},#{goodsNum},#{orderDate},#{totalPrice},#{payType},#{phoneCode})
+  </insert>
+    <select id="selectOrderSnack" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from order_sn where user_id=#{user_id}
+    </select>
+</mapper>

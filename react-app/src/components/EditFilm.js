@@ -1,11 +1,11 @@
 import React from "react";
 import {store} from "../index";
-import {changeBrightness, changeOpacity, checkedList, getFimPageInfo, receiveFilms} from "../actions";
+import {checkedList, getFimPageInfo, receiveFilms, receivePostImgUrl, receiveUploadImgUrl} from "../actions";
 import $ from "jquery";
-import getAllFilms, {getAllMovieCrew, getCinemaPage, getDelete, getFilmPage, postEdit} from "../apis/data";
-import {deleteFilmApi, filmListApi, modifyFilmApi, modifyMovieCrewApi, movieCrewListApi} from "../apis/api";
+import {getDelete, getFilmPage, postEdit, postUploadImg} from "../apis/data";
+import {deleteFilmApi, modifyFilmApi, postUploadImgApi} from "../apis/api";
 import * as sysType from "../constants/const";
-import dateTimeUtil from "../utils/dateTimeUtil";
+import dateTimeUtil, {validateDate, validateDateTime} from "../utils/dateTimeUtil";
 import {connect} from "react-redux";
 import * as API from "../apis/api";
 import alert from "../utils/alert";
@@ -15,6 +15,7 @@ import {queryList, queryPageInfo} from "../actions/pageInfo";
 
 
 class EditFilm extends React.Component{
+
 
 
     constructor(props, context) {
@@ -27,10 +28,51 @@ class EditFilm extends React.Component{
              deleteKey:null,
              clickPageX:null,
              clickPageY:null,
-             checkBoxList:[]
+             checkBoxList:[],
+
          }
     }
+    renderOpacity=()=>{
+        if (this.props.upUrl==""||this.props.upUrl==undefined){
+            return 0;
+        }else {
+            return 1;
+        }
+    }
 
+    handleChangeImg=(e)=> {
+         store.dispatch(receiveUploadImgUrl(""));
+        console.log("file:",e.target.files[0],e.target.result)
+        let file=e.target.files[0];
+        let getUrl = null;
+        const windowURL = window.URL || window.webkitURL;//实现预览
+        if (window.createObjectURL != undefined) { // basic
+            getUrl = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            getUrl = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            getUrl = window.webkitURL.createObjectURL(file);
+            formData.append('img',file);
+        }
+        console.log("url file",getUrl)
+        $("#preview").attr('src',getUrl)
+        store.dispatch(receiveUploadImgUrl(getUrl))
+
+        console.log("图片大小",file.size)
+        // $("#preview").attr("src",getUrl)
+
+        if (file.size > 102400) {
+            alert('不能上传大于100k的图片')
+            return;
+        }
+        let formData = new FormData();
+        formData.append('uploadFile',file,file.name)// 通过append向form对象添加数据,可以通过append继续添加数据
+
+        postUploadImg(postUploadImgApi,formData)
+
+
+
+    }
     /**
      * [obj].map=>(data=>.....<td>..onclick={()=this....(param1(...,data))}
      * 此时窜的参数data,函数处理时只能拿到第一个遍历对象的值
@@ -45,25 +87,34 @@ class EditFilm extends React.Component{
      * @param Tag
      * @param data
      */
+    handleCancelEdit=()=>{
+        this.setState({isDialog:false,dialogShow:<div></div>})
+        $("#input_file").val("");
+        store.dispatch(receiveUploadImgUrl(""))
+    }
     handleClick1(Tag,data){
         // {console.log('---------------',data)}
      this.setState({
-         dialogShow:  <div id={'dialogWrap'} style={{width:'50%',margin:'0 auto'}}>
+         dialogShow:  <div id={'dialogWrap'} style={{width:'322px',margin:'0 auto'}}>
 
              <div><label className={'dialogLabel'}>电影ID：</label><input id={'edit1'} className={'dialogInput1'} readOnly={true} Value={data.data.film_id}/></div>
              <div><label className={'dialogLabel'}>电影名称：</label><input id={'edit2'} className={'dialogInput'} defaultValue={data.data.film_name}/></div>
              <div><label className={'dialogLabel'}>导演：</label><input id={'edit3'} className={'dialogInput'}  defaultValue={data.data.director}/></div>
              <div><label className={'dialogLabel'}>电影长度：</label><input id={'edit4'} className={'dialogInput'} defaultValue={data.data.film_length}/></div>
-             <div><label className={'dialogLabel'}>电影状态：</label><input id={'edit5'} className={'dialogInput'} defaultValue={data.data.status}/></div>
-             <div><label className={'dialogLabel'}>出产地区：</label><input id={'edit6'} className={'dialogInput'} defaultValue={data.data.product_area}/></div>
-             <div><label className={'dialogLabel'}>电影简介：</label><input id={'edit7'} className={'dialogInput'} defaultValue={data.data.brief}/></div>
-             <div><label className={'dialogLabel'}>类型：</label><input id={'edit8'} className={'dialogInput'} defaultValue={data.data.type}/></div>
-             <div><label className={'dialogLabel'}>上演时间：</label><input id={'edit9'} className={'dialogInput'} defaultValue={dateTimeUtil(data.data.public_date)}/></div>
-             <div><label className={'dialogLabel'}>想看人数：</label><input id={'edit10'} className={'dialogInput'} defaultValue={data.data.wish_num}/></div>
-             <div><label className={'dialogLabel'}>综合评分：</label><input id={'edit11'} className={'dialogInput'} defaultValue={data.data.score}/></div>
-             <div><label className={'dialogLabel'}>主演：</label><input id={'edit12'} className={'dialogInput'} defaultValue={data.data.actor}/></div>
-             <div><label className={'dialogLabel'}>图片：</label><input id={'edit13'} className={'dialogInput'} defaultValue={data.data.img}/></div>
-         </div>
+             <div><label className={'dialogLabel'}>出产地区：</label><input id={'edit5'} className={'dialogInput'} defaultValue={data.data.product_area}/></div>
+             <div style={{height:"155px"}}><label className={'dialogLabel'}>电影简介：</label><textarea id={'edit6'} className={'fdialogInput1'} defaultValue={data.data.brief}/></div>
+             <div><label className={'dialogLabel'}>类型：</label><input id={'edit7'} className={'dialogInput'} defaultValue={data.data.type}/></div>
+             <div><label className={'dialogLabel'}>上演时间：</label><input id={'edit8'} className={'dialogInput'} defaultValue={dateTimeUtil(data.data.public_date)}/></div>
+             <div><label className={'dialogLabel'}>下档时间：</label><input id={'edit9'} className={'dialogInput'} defaultValue={dateTimeUtil(data.data.end_date)}/></div>
+             <div><label className={'dialogLabel'}>主演：</label><input id={'edit10'} className={'dialogInput'} defaultValue={data.data.actor}/></div>
+             <div><label className={'dialogLabel'}>图片：</label>
+
+                 <div style={{border:'#777 1px solid',width:'80px',height:'100px',marginLeft:'120px'}}>
+                     {(data.data.img=="null"||data.data.img==null||data.data.img.trim()=='')?<img id={"img_1"} src={''} width={'80px'} height={'100px'}
+                                                                                                  style={{opacity:'0'}}/>:<img id={"img_1"} src={data.data.img} width={'80px'} height={'100px'}/>}</div>
+                  </div>
+
+            </div>
      });
      this.setState({isDialog:true})
 
@@ -78,7 +129,7 @@ handleclick2=(key,e)=>{
     this.setState({
         isDeleteDialog:true,
         deleteKey:key.data.film_id,
-        clickPageX:e.pageX-60+'px',
+        clickPageX:e.pageX-120+'px',
         clickPageY:e.pageY-25+'px'
     })
     //    进行删除操作
@@ -129,31 +180,39 @@ handleclick2=(key,e)=>{
     }
     //提交编辑
     handleEdit=async ()=>{
+          let test=$("#edit9").val();
+          let test0=$("#edit8").val();
+        let url=this.props.postImgUrl==""?$("#img_1").attr("src"):this.props.postImgUrl;
+          if (validateDate(test)&&validateDate(test0)){
+              let json={
+                  "version":sysType.VERSION,
+                  "params":{
+                      film_id:$("#edit1").val(),
+                      film_name:$("#edit2").val(),
+                      director:$("#edit3").val(),
+                      film_length:$("#edit4").val(),
+                      product_area:$("#edit5").val(),
+                      brief:$("#edit6").val(),
+                      type:$("#edit7").val(),
+                      public_date:$("#edit8").val(),
+                      end_date:$("#edit9").val(),
+                      actor:$("#edit10").val(),
 
-        let json={
-            "version":sysType.VERSION,
-            "params":{
-                film_id:$("#edit1").val(),
-                film_name:$("#edit2").val(),
-                director:$("#edit3").val(),
-                film_length:$("#edit4").val(),
-                status:$("#edit5").val(),
-                product_area:$("#edit6").val(),
-                brief:$("#edit7").val(),
-                type:$("#edit8").val(),
-                public_date:$("#edit9").val(),
-                wish_num:$("#edit10").val(),
-                score:$("#edit11").val(),
-                actor:$("#edit12").val(),
-                img:$("#edit13").val(),
+                      img:url,
 
-            }
-        }
+                  }
+              }
 
-        await postEdit(modifyFilmApi,json)
-        this.setState({isDialog:false})
-        // getAllFilms(filmListApi)
-        getFilmPage(API.filmPageApi,this.props.pageInfo.currentPage,this.props.pageInfo.pageSize)
+              await postEdit(modifyFilmApi,json)
+              this.setState({isDialog:false,dialogShow:<div></div>})
+              // getAllFilms(filmListApi)
+              getFilmPage(API.filmPageApi,this.props.pageInfo.currentPage,this.props.pageInfo.pageSize)
+              store.dispatch(receivePostImgUrl(""))
+              store.dispatch(receiveUploadImgUrl(""))
+              $("#input_file").val("");
+          }else {
+              alert("日期格式不正确")
+          }
 
 
     }
@@ -162,14 +221,14 @@ dialog=(Tag)=>{
         return 'none'
     }
     else {
-        return 'block'
+        return 'flex'
     }
 }
     handleClickSpanNumber=(e)=>{
         console.log('--page span number-###############',e.currentTarget.innerHTML)
         console.log('--page props size-###############',this.props.pageInfo.pageSize)
         console.log('--this.props.queryFilmList-###############',this.props.queryFilmList)
-        if (e.currentTarget.innerHTML===this.props.pageInfo.currentPage){
+        if (e.currentTarget.innerHTML==this.props.pageInfo.currentPage){
             alert("已经是第"+e.currentTarget.innerHTML+"页")
         }else {
             if (this.props.queryStatusFilm===1){
@@ -247,7 +306,12 @@ dialog=(Tag)=>{
         }
     }
     //
-
+    //渲染当页的菜单
+    handleChangePage=(item)=>{
+        if (item===this.props.pageInfo.currentPage){
+            return {backgroundColor:"#80000d",color:"#ffffff",padding:"6px 10px"}
+        }else return {padding:"6px 10px"}
+    }
     //条件渲染的分页
     doRenderForPage=()=>{
         let arr=[];
@@ -260,34 +324,41 @@ dialog=(Tag)=>{
             for (let i=1;i<=tp;i++){
                 arr.push(i)
             }
-            return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+            return arr.map(item=> <span className={"pageSpan"} >
+                <a style={this.handleChangePage(item)} onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
         }else if (11>=tp>8){
 
             if ((tp/2)>t){
                 arr=[1,2,3,4,5,6,7,8]
-                return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                    onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
             }else {
                 arr=[4,5,6,7,8,9,10,11]
-                return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)}
+                return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                    onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)}
         }else if (tp>11){
             if ((tp/2)>=t){
 
                 if (t>=3){
                     arr=[t-2,t-1,t,t+1,t+2,t+3,t+4,t+5]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }else {
                     arr=[1,2,3,4,5,6,7,8]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }
             }else if ((tp/2)<t){
 
 
                 if (tp-2>=t){
                     arr=[t-5,t-4,t-3,t-2,t-1,t,t+1,t+2]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }else {
                     arr=[tp-7,tp-6,tp-5,tp-4,tp-3,tp-2,tp-1,tp]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }
             }
 
@@ -345,13 +416,12 @@ dialog=(Tag)=>{
     }
 render() {
   const  dialogStyle={
-      width:'50%',
-      height:'70%',
+      width:'100%',
+      height:'100%',
       zIndex:'9999',
       position:'fixed',
-      top:'80px',
-      left:'25%',
-      backgroundColor:'#ffffff',
+      top:0,
+      left:0,
       brightness:0,
       // borderRadius:'10px',
 
@@ -391,15 +461,14 @@ render() {
            <td>{data.film_name}</td>
            <td>{data.director}</td>
            <td>{data.film_length}</td>
-           <td>{data.status}</td>
            <td>{data.product_area}</td>
            <td>{data.brief}</td>
            <td>{data.type}</td>
            <td>{dateTimeUtil(data.public_date)}</td>
-            <td>{data.wish_num}</td>
-           <td>{data.score}</td>
+            <td>{dateTimeUtil(data.end_date)}</td>
            <td>{data.actor}</td>
-           <td>{data.img}</td>
+           <td>{(data.img=="null"||data.img==null||data.img.trim()=='')?<img id={'data_img'} src={''} width={'50px'} height={'60px'}
+                                                                             style={{opacity:'0'}}/>:<img id={'data_img'} src={data.img} width={'50px'} height={'60px'}/>}</td>
                 <td><a className={'click'} onClick={()=>this.handleClick1(this.state.isDialog,{data})}>编辑</a>
                     <a id={key++} style={{marginLeft:'5px'}} className={'click'} onClick={(e)=>this.handleclick2({data},e)}>删除</a></td>
             </tr>
@@ -439,18 +508,35 @@ render() {
         </div>
         {/*******************************************************编辑时的弹窗功能**************************************/}
         <div style={dialogStyle} id={'dialog'}>
-            <div style={{margin:'0',padding:'0',width:'100%',height:'100%',position:'relative'}}>
+            <div className={"wrap_edt_film_dialog"}>
                 <div style={{textAlign:'center',fontWeight:'bold',height:'6%',marginTop:'2%'}}>编辑您的选项</div>
-                <div style={{ overflowY:'scroll',height:'70%'}}>{this.state.dialogShow}</div>
-                <div style={{position:'absolute',bottom:'35px',width:'100%',display:'block',textAlign:'center'}}>
+                <div style={{ overflowY:'scroll',height:'250px'}}>{this.state.dialogShow}</div>
+                <div style={{width:'100%',display:'block',textAlign:'center',paddingTop:'15px',backgroundColor:'#efefef'}}>
+
+                    <div><label >更换及预览图片：</label>
+
+                        <input
+                            onChange={(e)=>this.handleChangeImg(e)}
+                            id={'input_file'}
+                            className={'addInput'} type={'file'} name={'img'} multiple={'multiple'}
+                            accept={"image/gif,image/jpeg,image/jpg,image/png,image/svg"}/>
+
+
+
+                    </div>
+
+                    <div>
+                        <div style={{border:'1px solid #777',width:'80px',height:'100px',marginLeft:'100px',backgroundColor:'#fff'}}>
+                            {console.log("url"+this.props.postImgUrl,this.props.upUrl)}
+                            <img style={{opacity:this.renderOpacity()}} id={'preview'} src={this.props.upUrl} id={'img0'} width={'80px'} height={'100px'}/>
+
+                        </div>
+
+                    </div>
                     <button
                         onClick={()=>this.handleEdit()}
                         className={'dbutton'}>确认</button><button
-                    onClick={()=>{
-                        this.setState({isDialog:false,dialogShow:<div></div>
-                        })
-
-                    }}
+                    onClick={()=>this.handleCancelEdit()}
                                                                      className={'dbutton'}>取消</button></div>
             </div>
         </div>
@@ -470,6 +556,8 @@ render() {
 const mapStateToProps=state=>({
     pageInfo:state.filmPageInfo,
     queryStatusFilm: state.queryStatusFilm,
-    queryFilmList: state.queryFilmList
+    queryFilmList: state.queryFilmList,
+    upUrl: state.upUrl,
+    postImgUrl: state.postImgUrl
 })
 export default connect(mapStateToProps)(EditFilm);

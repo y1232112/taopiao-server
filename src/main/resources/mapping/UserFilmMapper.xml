@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.UserFilmMapper">
+    <!-- 根据主键查询-->
+    <select id="getWishFilmByUser" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        select film_id
+        from user_film
+        where user_id = #{id}
+    </select>
+    <select id="getWishByUserAndFilm" resultType="hashmap">
+        select * from user_film
+        where user_id=#{user_id} and film_id=#{film_id}
+    </select>
+    <insert id="addWishFilm" parameterType="com.example.tp.entity.UserFilm">
+        insert into user_film (user_id,film_id,wish_status,wish_time)
+        values (#{userId},#{filmId},#{wishStatus},#{wishTime})
+
+    </insert>
+    <delete id="updateWishFilm" parameterType="com.example.tp.entity.UserFilm">
+        update user_film
+        set wish_status=#{wishStatus},wish_time=#{wishTime}
+        where user_id=#{userId} and film_id=#{filmId}
+    </delete>
+    <insert id="addLookedFilm" parameterType="com.example.tp.entity.UserFilm">
+        insert into user_film (user_id,film_id,looked,looked_time)
+        values (#{userId},#{filmId},#{looked},#{lookedTime})
+
+    </insert>
+    <delete id="updateLookedFilm" parameterType="com.example.tp.entity.UserFilm">
+        update user_film
+        set looked=#{looked},looked_time=#{lookedTime}
+        where user_id=#{userId} and film_id=#{filmId}
+    </delete>
+    <select id="selectCountById" parameterType="com.example.tp.entity.UserFilm" resultType="java.lang.Integer">
+          select count(*) from user_film where
+          user_id=#{userId} and film_id=#{filmId}
+
+    </select>
+    <select id="selectAboutUserFilm" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from user_film where film_id=#{film_id} and user_id=#{user_id}
+
+    </select>
+    <select id="myWishFilm" parameterType="java.lang.Integer" resultType="hashmap">
+        select f.film_id,f.film_name,f.type,uf.wish_time,f.img,
+        (select count(*) from user_film where f.film_id=user_film.film_id and user_film.wish_status=1)as wish_num,
+           (select avg(score) from user_comment where t_id=f.film_id  and type=1 ) as avgscore
+         from user_film as uf,film as f
+        where uf.user_id=#{user_id} and f.film_id=uf.film_id and uf.wish_status=1
+    </select>
+    <select id="myLookedFilm" parameterType="java.lang.Integer" resultType="hashmap">
+        select f.film_id,f.film_name,f.type,uf.looked_time,f.img,
+        (select count(*) from user_film where f.film_id=user_film.film_id and user_film.looked=1)as looked_num,
+           (select avg(score) from user_comment where t_id=f.film_id  and type=1 ) as avgscore
+         from user_film as uf,film as f
+        where uf.user_id=#{user_id} and f.film_id=uf.film_id and uf.looked=1
+    </select>
+</mapper>

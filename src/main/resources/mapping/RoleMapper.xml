@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.RoleMapper">
+<!--添加角色信息-->
+    <insert id="addRole" parameterType="com.example.tp.entity.Role">
+        insert into role(movie_crew_id,film_id,role)
+        values (#{movieCrewId},#{filmId},#{role})
+    </insert>
+    <select id="selectRoleByFilm" parameterType="java.lang.Integer" resultType="hashmap">
+        select   mc.movie_crew_id,mc.movie_crew_name,role.role,mc.img from movie_crew as mc,role
+        where role.film_id=#{id} and role.movie_crew_id=mc.movie_crew_id
+
+
+    </select>
+</mapper>

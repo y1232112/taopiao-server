@@ -5,6 +5,7 @@ import contains from "../utils/helpUtil";
 import * as sysTypes from "../constants/const"
 import * as API from "../apis/api";
 import getAllFilms, {
+    getCinemaAdminPage, getCinemaAdminQuery,
     getCinemaQuery,
 
     getFilmPage,
@@ -16,7 +17,13 @@ import {store} from "../index";
 import {filmListApi} from "../apis/api";
 import {movieCrewListApi} from "../apis/api";
 import {cinemaListApi} from "../apis/api";
-import {checkedList, getQueryStatusCinema, getQueryStatusFilm, getQueryStatusMovieCrew} from "../actions";
+import {
+    checkedList,
+    getQueryStatusCinema,
+    getQueryStatusCinemaAdmin,
+    getQueryStatusFilm,
+    getQueryStatusMovieCrew
+} from "../actions";
 import {filmPageApi} from "../apis/api";
 import {movieCrewPageApi} from "../apis/api";
 import {cinemaPageApi} from "../apis/api";
@@ -59,12 +66,18 @@ class ButtonSearchBar extends React.Component{
                 break;
             case 8:
                await postSomeDelete(API.deleteCinemasApi,json)
-                // getAllCinemas(cinemaListApi)
+
                 let c3=this.props.cinemaPageInfo.currentPage
                 let s3=this.props.cinemaPageInfo.pageSize
                getFilmPage(cinemaPageApi,c3,s3)
                 store.dispatch(checkedList([]))
                 break;
+            case 11:
+                await postSomeDelete(API.deleteCinemaAdminsApi,json)
+                let c5=this.props.cinemaAdminPageInfo.currentPage
+                let s5=this.props.cinemaAdminPageInfo.pageSize
+                getCinemaAdminPage(API.cinemaAdminPageApi,c5,s5)
+                store.dispatch(checkedList([]))
             default:
                 return ;
         }
@@ -80,9 +93,9 @@ class ButtonSearchBar extends React.Component{
             return <span>
             <input id={"field_1"} className={'mySearch'}   placeholder={'输入电影名'}/>
                <input id={"field_2"} className={'mySearch'}  placeholder={'输入导演'}/>
-            <input id={"field_3"} className={'mySearch'}  placeholder={'输入状态'}/>
-            <input id={"field_4"} className={'mySearch'}  placeholder={'输入出产地'}/>
-            <input id={"field_5"} className={'mySearch'}  placeholder={'输入类型'}/>
+
+            <input id={"field_3"} className={'mySearch'}  placeholder={'输入出产地'}/>
+            <input id={"field_4"} className={'mySearch'}  placeholder={'输入类型'}/>
 
            </span>
         }
@@ -101,6 +114,13 @@ class ButtonSearchBar extends React.Component{
 
            </span>
         }
+        if (this.props.menuResponse===11||this.props.menuResponse===12){
+            return <span>
+                    <input id={"field_1"} className={'mySearch'}  placeholder={'输入影昵称'}/>
+               <input id={"field_2"} className={'mySearch'}  placeholder={'输入电话'}/>
+            <input id={"field_3"} className={'mySearch'}  placeholder={'输入真实姓名'}/>
+            </span>
+        }
 
     }
     handleClickQuery=async ()=>{
@@ -112,7 +132,7 @@ class ButtonSearchBar extends React.Component{
                $("#field_2").val(),
                $("#field_3").val(),
                $("#field_4").val(),
-               $("#field_5").val()
+
            )
         }
         if (this.props.menuResponse===5||this.props.menuResponse===6){
@@ -128,9 +148,17 @@ class ButtonSearchBar extends React.Component{
                    API.cinemaSearchApi,
                    $("#field_1").val(),
                    $("#field_2").val(),
-                   $("#field_3").val(),
+                   $("#field_3").val()
                )
         }
+         if (this.props.menuResponse===11||this.props.menuResponse===12){
+             await getCinemaAdminQuery(
+                 API.cinemaAdminSearchApi,
+                 $("#field_1").val(),
+                 $("#field_2").val(),
+                 $("#field_3").val()
+             )
+         }
 
     }
     handleReset=()=>{
@@ -138,7 +166,7 @@ class ButtonSearchBar extends React.Component{
         $("#field_2").val('')
         $("#field_3").val('')
         $("#field_4").val('')
-        $("#field_5").val('')
+
         if (this.props.menuResponse===2||this.props.menuResponse===3){
             store.dispatch(getQueryStatusFilm(0))
         }
@@ -147,6 +175,9 @@ class ButtonSearchBar extends React.Component{
         }
         if (this.props.menuResponse===8||this.props.menuResponse===9){
             store.dispatch(getQueryStatusCinema(0))
+        }
+        if (this.props.menuResponse===11||this.props.menuResponse===12){
+            store.dispatch(getQueryStatusCinemaAdmin(0))
         }
 
     }
@@ -159,11 +190,15 @@ class ButtonSearchBar extends React.Component{
                 return dom1
             case 9:
                 return dom1
+            case 12:
+                return dom1
             case 2:
                 return dom2
             case 5:
                 return dom2
             case 8:
+                return dom2
+            case 11:
                 return dom2
             default:
                 return ;
@@ -172,7 +207,7 @@ class ButtonSearchBar extends React.Component{
     //条件渲染删除按钮
       doRenderButton=()=>{
 
-        if (this.props.checkedList.length==0){
+        if (this.props.checkedList.length===0){
             return 'someDeleteBtn0'
         }else {
             return 'someDeleteBtn'

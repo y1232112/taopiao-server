@@ -81,4 +81,29 @@ public class CinemaService {
     public List<Cinema> searchCinema(String cinema_name,String province,String city){
         return cinemaMapper.searchCinema(cinema_name,province,city);
     }
+    public List<Cinema> selectCinemaNoAssign(){
+        return cinemaMapper.selectCinemaNoAssign();
+    }
+    public List<Cinema> selectCinemaByAdminId(Integer id){
+        return cinemaMapper.selectCinemaByAdminId(id);
+    }
+    public  int updateNotice(Integer id,String notice){
+        return cinemaMapper.updateNotice(id,notice);
+    };
+    public String getNotice(Integer id){
+        return cinemaMapper.getNotice(id);
+    }
+    public List<Object> selectCinemasAndServe(String city){
+        return cinemaMapper.selectCinemasAndServeByCity(city);
+    };
+    public List<Object> selectCinemasAndServeById(Integer id){
+        return cinemaMapper.selectCinemasAndServeById(id);
+    }
+    public  List<Object> havefilmScheduleCinemas(Integer film_id,String city,String date){
+        return cinemaMapper.havefilmScheduleCinemas(film_id,city,date);
+
+    }
+    public  List<Object> searchCinemaBycityCounty(String county,String city){
+        return cinemaMapper.searchCinemaBycityCount(county,city);
+    };
 }

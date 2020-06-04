@@ -1,54 +1,60 @@
 package com.example.tp.entity;
 
 public class Comment {
-    private Integer commentId;
-    private Integer filmId;
-    private Integer userId;
-    private String userScore;
-    private String commentContent;
-    private String commentDate;
-    private Integer supportNum;
-    private String supportUser;
-    private Integer isPass;
+   private Integer id;
+   private Integer tId;
+   private Integer type;
+   private Integer score;
+   private String content;
+   private Integer fromUid;
+   private String commentDate;
 
-    public Integer getCommentId() {
-        return commentId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCommentId(Integer commentId) {
-        this.commentId = commentId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getFilmId() {
-        return filmId;
+    public Integer gettId() {
+        return tId;
     }
 
-    public void setFilmId(Integer filmId) {
-        this.filmId = filmId;
+    public void settId(Integer tId) {
+        this.tId = tId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getType() {
+        return type;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
-    public String getUserScore() {
-        return userScore;
+    public Integer getScore() {
+        return score;
     }
 
-    public void setUserScore(String userScore) {
-        this.userScore = userScore;
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
-    public String getCommentContent() {
-        return commentContent;
+    public String getContent() {
+        return content;
     }
 
-    public void setCommentContent(String commentContent) {
-        this.commentContent = commentContent;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getFromUid() {
+        return fromUid;
+    }
+
+    public void setFromUid(Integer fromUid) {
+        this.fromUid = fromUid;
     }
 
     public String getCommentDate() {
@@ -59,42 +65,16 @@ public class Comment {
         this.commentDate = commentDate;
     }
 
-    public Integer getSupportNum() {
-        return supportNum;
-    }
-
-    public void setSupportNum(Integer supportNum) {
-        this.supportNum = supportNum;
-    }
-
-    public String getSupportUser() {
-        return supportUser;
-    }
-
-    public void setSupportUser(String supportUser) {
-        this.supportUser = supportUser;
-    }
-
-    public Integer getIsPass() {
-        return isPass;
-    }
-
-    public void setIsPass(Integer isPass) {
-        this.isPass = isPass;
-    }
-
     @Override
     public String toString() {
         return "Comment{" +
-                "commentId=" + commentId +
-                ", filmId=" + filmId +
-                ", userId=" + userId +
-                ", userScore='" + userScore + '\'' +
-                ", commentContent='" + commentContent + '\'' +
+                "id=" + id +
+                ", tId=" + tId +
+                ", type=" + type +
+                ", score=" + score +
+                ", content='" + content + '\'' +
+                ", fromUid=" + fromUid +
                 ", commentDate='" + commentDate + '\'' +
-                ", supportNum=" + supportNum +
-                ", supportUser='" + supportUser + '\'' +
-                ", isPass=" + isPass +
                 '}';
     }
 }

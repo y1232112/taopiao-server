@@ -12,7 +12,7 @@
     </select>
 <!--    添加影员-->
     <insert id="addMovieCrew" parameterType="com.example.tp.entity.MovieCrew" useGeneratedKeys="true" keyProperty="movieCrewId">
-        insert into movie_crew(movie_crew_name,img) values (#{movieCrewName},#{img})
+        insert into movie_crew(movie_crew_name,sex,img) values (#{movieCrewName},#{sex},#{img})
     </insert>
 <!--    根据id 删除影员  -->
     <delete id="deleteMovieCrewById"  >
@@ -29,7 +29,10 @@
 <!--    修改影院信息   编辑-->
     <update id="modifyMovieCrew" parameterType="com.example.tp.entity.MovieCrew">
         update movie_crew
-        set movie_crew_name=#{movieCrewName},img=#{img}
+        set movie_crew_name=#{movieCrewName},sex=#{sex}
+        <if test="img !='' and img!=null">
+            ,img=#{img}
+        </if>
       where movie_crew_id=#{movieCrewId}
     </update>
 <!--    查询数据长度-->

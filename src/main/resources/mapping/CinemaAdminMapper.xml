@@ -15,4 +15,127 @@
         nick_name=  #{nickname}
 
     </select>
+    <select id="selectCinemaAdminByNP" resultType="hashmap">
+        select * from cinema_admin
+        where nick_name=#{nickName} and password=#{password}
+    </select>
+<!--    查询数据表格的长度-->
+    <!--    查询数据长度-->
+    <select id="getCinemaAdminCount" resultType="java.lang.Integer">
+        select count(*) from cinema_admin
+    </select>
+    <!--    插叙区间-->
+    <select id="getCinemaAdminPage" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from cinema_admin LIMIT #{start},#{pageSize}
+    </select>
+
+    <!--    添加影院管理员-->
+    <insert id="addCinemaAdmin" parameterType="com.example.tp.entity.CinemaAdmin" useGeneratedKeys="true" keyProperty="cinemaAdminId">
+        insert into cinema_admin
+
+
+          <trim prefix="(" suffix=")" prefixOverrides=",">
+              <if test="nickName !='' and nickName !=null">
+                  nick_name
+              </if>
+              <if test="password !='' and password !=null">
+                  ,password
+              </if>
+              <if test="phone !='' and phone !=null">
+                  ,phone
+              </if>
+              <if test="birth !='' and birth !=null">
+                  ,birth
+              </if>
+              <if test="realName !='' and realName !=null">
+                  ,real_name
+              </if>
+              <if test="sex!='' and sex !=null">
+                  ,sex
+              </if>
+              <if test="avatar !='' and avatar !=null">
+                  ,avatar
+              </if>
+          </trim>
+          <trim prefix="values(" suffix=")" prefixOverrides=",">
+              <if test="nickName !='' and nickName !=null">
+                  #{nickName}
+              </if>
+              <if test="password !='' and password !=null">
+                  ,#{password}
+              </if>
+              <if test="phone !='' and phone !=null">
+                  ,#{phone}
+              </if>
+              <if test="birth !='' and birth !=null">
+                  ,#{birth}
+              </if>
+              <if test="realName !='' and realName !=null">
+                  ,#{realName}
+              </if>
+              <if test="sex !='' and sex !=null">
+                  ,#{sex}
+              </if>
+              <if test="avatar !='' and avatar !=null">
+                  ,#{avatar}
+              </if>
+          </trim>
+
+
+    </insert>
+    <!--    根据id 删除影院管理员  -->
+    <delete id="deleteCinemaAdminById"  >
+        delete from cinema_admin where cinema_admin_id=#{id}
+    </delete>
+    <!--    根据影院管理员id数组批量删除-->
+    <!--    item代表集合中的每一项-->
+    <delete id="deleteCinemaAdminByIds" parameterType="java.lang.Integer">
+        delete from cinema_admin where cinema_admin_id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </delete>
+    <!--    修改影院管理员信息   编辑-->
+    <update id="modifyCinemaAdmin" parameterType="com.example.tp.entity.CinemaAdmin">
+        update cinema_admin
+        set nick_name=#{nickName},phone=#{phone}
+        ,birth=#{birth},real_name=#{realName},sex=#{sex}
+        <if test="avatar !='' and avatar!=null">
+            ,avatar=#{avatar}
+        </if>
+      where cinema_admin_id=#{cinemaAdminId}
+    </update>
+<!--    动态查询-->
+    <select id="searchCinemaAdmin" parameterType="java.lang.String" resultType="hashmap">
+        select * from cinema_admin
+        <where>
+            <if test="nick_name !='' and nick_name !=null">
+                nick_name like "%${nick_name}%"
+            </if>
+            <if test="phone !='' and phone !=null">
+                and phone like "%${phone}%"
+            </if>
+            <if test="real_name !='' and real_name !=null">
+                and real_name like "%${real_name}%"
+            </if>
+        </where>
+    </select>
+<!--    查询 未分配的影院管理员-->
+    <select id="selectAdminNoAss" resultType="hashmap">
+--        select *
+--        from cinema_admin as ca
+--        where ca.cinema_admin_id  not in
+--       ( select a.cinema_admin_id from assign as a)
+    select *
+    from cinema_admin as ca
+    left join assign as a
+    on ca.cinema_admin_id=a.cinema_admin_id
+    where a.cinema_admin_id is null
+    </select>
+<!--    跟新部分信息-->
+    <update id="updateSomenInfo" parameterType="com.example.tp.entity.CinemaAdmin" >
+        update cinema_admin
+        set cinema_admin_id=#{cinemaAdminId},nick_name=#{nickName},password=#{password},phone=#{phone},birth=#{birth},real_name=#{realName},sex=#{sex}
+        where cinema_admin_id=#{cinemaAdminId}
+    </update>
 </mapper>

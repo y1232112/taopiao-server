@@ -4,10 +4,14 @@ public class Schedule {
     private Integer scheduleId;
     private Integer filmId;
     private Integer cinemaId;
-    private String hallName;
+    private Integer hallId;
     private String showDate;
-    private double price;
-    private String seatInfo;
+    private double originPrice;
+    private String discount;
+    private double discountPrice;
+    private String startTime;
+    private String endTime;
+    private String language;
 
     public Integer getScheduleId() {
         return scheduleId;
@@ -33,12 +37,12 @@ public class Schedule {
         this.cinemaId = cinemaId;
     }
 
-    public String getHallName() {
-        return hallName;
+    public Integer getHallId() {
+        return hallId;
     }
 
-    public void setHallName(String hallName) {
-        this.hallName = hallName;
+    public void setHallId(Integer hallId) {
+        this.hallId = hallId;
     }
 
     public String getShowDate() {
@@ -49,20 +53,52 @@ public class Schedule {
         this.showDate = showDate;
     }
 
-    public double getPrice() {
-        return price;
+    public double getOriginPrice() {
+        return originPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setOriginPrice(double originPrice) {
+        this.originPrice = originPrice;
     }
 
-    public String getSeatInfo() {
-        return seatInfo;
+    public String getDiscount() {
+        return discount;
     }
 
-    public void setSeatInfo(String seatInfo) {
-        this.seatInfo = seatInfo;
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     @Override
@@ -71,10 +107,14 @@ public class Schedule {
                 "scheduleId=" + scheduleId +
                 ", filmId=" + filmId +
                 ", cinemaId=" + cinemaId +
-                ", hallName='" + hallName + '\'' +
+                ", hallId=" + hallId +
                 ", showDate='" + showDate + '\'' +
-                ", price=" + price +
-                ", seatInfo='" + seatInfo + '\'' +
+                ", originPrice=" + originPrice +
+                ", discount='" + discount + '\'' +
+                ", discountPrice=" + discountPrice +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", language='" + language + '\'' +
                 '}';
     }
 }

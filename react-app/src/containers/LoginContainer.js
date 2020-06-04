@@ -3,7 +3,8 @@ import React from "react";
 import {store} from "../index";
 import {connect} from "react-redux";
 import * as types from '../constants/actionTypes'
-
+import md5 from "js-md5";
+import {salt} from "../constants/const";
 
 class LoginContainer extends React.Component{
 
@@ -47,14 +48,14 @@ class LoginContainer extends React.Component{
         //Tag为true,!Tag为false
         //Tag表示影城管理员模块
         //!Tag表示系统管理员模块
-
+      let md5Password=md5(password.value+salt);
 
         //路由跳转传参
-        this.props.history.push({pathname:'/delLogin',state:{admin:admin.value,password:password.value,Tag:Tag}});
+        this.props.history.push({pathname:'/delLogin',state:{admin:admin.value,password:md5Password,Tag:Tag}});
 
     }
     render() {
-
+      console.log("md5:",md5("admin1248"))
       const bodyStyle={
         display:'flex',
         justifyContent:'center',

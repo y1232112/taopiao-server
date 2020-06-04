@@ -11,6 +11,15 @@ public class User {
     private String createTime;
     private String updateTime;
     private String avatar;
+    private String salt;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -105,6 +114,7 @@ public class User {
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", salt='" + salt + '\'' +
                 '}';
     }
 }

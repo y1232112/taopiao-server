@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.HallMapper">
+    <!-- 根据主键查询-->
+<!--    <select id="getById" resultType="cn.stephen.study.demoproject.entity.TestEntity" parameterType="java.lang.Integer">-->
+<!--        select *-->
+<!--        from test-->
+<!--        where id = #{id}-->
+<!--    </select>-->
+<!--    添加影厅  -->
+    <insert id="addHall" parameterType="com.example.tp.entity.Hall">
+        insert into hall(hall_id,cinema_id,hall_name,row_count ,column_count,hall_type)
+        values (#{hallId},#{cinemaId},#{hallName},#{rowCount},#{columnCount},#{hallType})
+    </insert>
+<!--获得所有影厅信息-->
+    <select id="getAllHallByCinemaId" resultType="hashmap">
+        select * from hall
+        where cinema_id=#{id}
+    </select>
+<!--    -->
+    <select id="selectHall" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from  hall where cinema_id=#{cinema_id} and hall_id=#{hall_id}
+    </select>
+    <delete id="deleteHall" parameterType="java.lang.Integer">
+        delete from hall where cinema_id=#{cinema_id} and hall_id=#{hall_id}
+    </delete>
+</mapper>

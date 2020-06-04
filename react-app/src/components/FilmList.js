@@ -87,6 +87,12 @@ class FilmList extends React.Component{
             }
         }
     }
+    //渲染当页的菜单
+    handleChangePage=(item)=>{
+        if (item===this.props.pageInfo.currentPage){
+            return {backgroundColor:"#80000d",color:"#ffffff",padding:"6px 10px"}
+        }else return {padding:"6px 10px"}
+    }
     //条件渲染的分页
     doRenderForPage=()=>{
         let arr=[];
@@ -99,34 +105,41 @@ class FilmList extends React.Component{
             for (let i=1;i<=tp;i++){
                 arr.push(i)
             }
-            return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+            return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
         }else if (11>=tp>8){
 
             if ((tp/2)>t){
                 arr=[1,2,3,4,5,6,7,8]
-                return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                    onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
             }else {
                 arr=[4,5,6,7,8,9,10,11]
-                return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)}
+                return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                    onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)}
         }else if (tp>11){
             if ((tp/2)>=t){
 
                 if (t>=3){
                     arr=[t-2,t-1,t,t+1,t+2,t+3,t+4,t+5]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }else {
                     arr=[1,2,3,4,5,6,7,8]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }
             }else if ((tp/2)<t){
 
 
                 if (tp-2>=t){
                     arr=[t-5,t-4,t-3,t-2,t-1,t,t+1,t+2]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }else {
                     arr=[tp-7,tp-6,tp-5,tp-4,tp-3,tp-2,tp-1,tp]
-                    return arr.map(item=> <span className={"pageSpan"}><a onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
+                    return arr.map(item=> <span className={"pageSpan"}><a style={this.handleChangePage(item)}
+                        onClick={(e)=>this.handleClickSpanNumber(e)}>{item}</a></span>)
                 }
             }
 
@@ -199,21 +212,22 @@ class FilmList extends React.Component{
 
         const myDatasource=this.props.DataSource;
         let key=0;
+
         let myList= myDatasource.map(data=><tr  key={data.film_id}>
 
                 <td>{data.film_id}</td>
                 <td>{data.film_name}</td>
                 <td>{data.director}</td>
                 <td>{data.film_length}</td>
-                <td>{data.status}</td>
+
                 <td>{data.product_area}</td>
                 <td>{data.brief}</td>
                 <td>{data.type}</td>
                 <td>{dateTimeUtil(data.public_date)}</td>
-                <td>{data.wish_num}</td>
-                <td>{data.score}</td>
+                <td>{dateTimeUtil(data.end_date)}</td>
                 <td>{data.actor}</td>
-                <td>{data.img}</td>
+                <td>{(data.img=="null"||data.img==null||data.img.trim()=='')?<img  src={''} width={'50px'} height={'60px'}
+                style={{opacity:'0'}}/>:<img  src={data.img} width={'50px'} height={'60px'}/>}</td>
                 </tr>
         )
         return <div>

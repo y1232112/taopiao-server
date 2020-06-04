@@ -7,6 +7,7 @@ public class CinemaAdmin {
     private String phone;
     private String birth;
     private String realName;
+    private String sex;
     private String avatar;
 
     public Integer getCinemaAdminId() {
@@ -57,6 +58,14 @@ public class CinemaAdmin {
         this.realName = realName;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     public String getAvatar() {
         return avatar;
     }
@@ -74,6 +83,7 @@ public class CinemaAdmin {
                 ", phone='" + phone + '\'' +
                 ", birth='" + birth + '\'' +
                 ", realName='" + realName + '\'' +
+                ", sex='" + sex + '\'' +
                 ", avatar='" + avatar + '\'' +
                 '}';
     }

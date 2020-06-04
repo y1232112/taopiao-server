@@ -1,21 +1,32 @@
 package com.example.tp.controller;
 
+import com.example.tp.entity.Assign;
 import com.example.tp.entity.Cinema;
 import com.example.tp.entity.MovieCrew;
 import com.example.tp.entity.PageManager;
+import com.example.tp.service.AssignService;
+import com.example.tp.service.CinemaAdminService;
 import com.example.tp.service.CinemaService;
 import com.example.tp.utils.JsonUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 @RestController
 public class CinemaController {
     @Autowired
     private CinemaService cinemaService;
+    @Autowired
+    private CinemaAdminService cinemaAdminService;
+    @Autowired
+    private AssignService assignService;
     @RequestMapping(value = "/CinemaList",method = RequestMethod.GET)
     public String cinemalist() throws JsonProcessingException {
         ObjectMapper mapper=new ObjectMapper();
@@ -107,4 +118,67 @@ public class CinemaController {
     System.out.println("-----"+cinema_name+"---"+province+"----"+city);
         return mapper.writeValueAsString(cinemaService.searchCinema(cinema_name,province,city));
     }
+    @RequestMapping(value = "/cinema/assign/noAS",method = RequestMethod.GET)
+    public String receiveNoAssCinemas() throws JsonProcessingException {
+        ObjectMapper mapper=new ObjectMapper();
+          System.out.println(cinemaService.selectCinemaNoAssign());
+        return mapper.writeValueAsString(cinemaService.selectCinemaNoAssign());
+    }
+    @RequestMapping(value = "/cinema/noAssAdmin",method = RequestMethod.GET)
+    public String getNoAssAdmin() throws JsonProcessingException {
+       ObjectMapper mapper=new ObjectMapper();
+        try {
+            String json=mapper.writeValueAsString(cinemaAdminService.selectAdminNoAss());
+            return json;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return JsonUtils.delFailure();
+        }
+
+    }
+    @RequestMapping(value = "/cinema/addAssignInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public String addAssignInfo(@RequestBody String receiveJson) throws JsonProcessingException {
+        Assign assign=new Assign();
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            assign.setCinemaId(Integer.parseInt(JsonUtils.getFormJson(receiveJson,"cinema_id")));
+            assign.setCinemaAdminId(Integer.parseInt(JsonUtils.getFormJson(receiveJson,"cinema_admin_id")));
+            assign.setAssignTime(df.format(new Date()));
+            int num=assignService.addAssignInfo(assign);
+            if (num>0){
+                return JsonUtils.delSuccess();
+            }else return JsonUtils.delFailure();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return JsonUtils.delFailure();
+        }
+    }
+    @RequestMapping(value = "/cinema/assignCinemaIds",method = RequestMethod.GET)
+    public String selectAssignCinemaIds() throws IOException {
+
+        return JsonUtils.assignIdsJson(assignService.selectAssignCinemaIds());
+    }
+    @RequestMapping(value = "/cinema/byAdminId/{id}",method = RequestMethod.GET)
+    public String selectCinemaByAdminId(@PathVariable Integer id) throws JsonProcessingException {
+       ObjectMapper mapper=new ObjectMapper();
+       return mapper.writeValueAsString(cinemaService.selectCinemaByAdminId(id));
+    }
+    @RequestMapping(value = "/cinema/getNotice/{id}",method = RequestMethod.GET)
+    public String getNotice(@PathVariable Integer id) throws JsonProcessingException {
+        System.out.println("---id---"+id);
+        return cinemaService.getNotice(id);
+
+    }
+    @RequestMapping(value = "/cinema/modifyNotice",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String modifyNotice(@RequestBody String receiveJson) throws JsonProcessingException{
+        int id=Integer.parseInt(JsonUtils.getFormJson(receiveJson,"cinema_id"));
+        String notice=JsonUtils.getFormJson(receiveJson,"notice");
+        int num=cinemaService.updateNotice(id,notice);
+        if (num>0){
+            return JsonUtils.delSuccess();
+        }else return JsonUtils.delFailure();
+    }
+
 }

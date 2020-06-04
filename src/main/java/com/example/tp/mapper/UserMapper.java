@@ -51,6 +51,7 @@ public interface UserMapper {
      * @return
      */
 
-   int insertRegist(String nickname, String password, String sex, String phone, String createtime);/*插入注册信息*/
+   int insertRegist(String nickname, String password, String sex, String phone, String createtime,String salt);/*插入注册信息*/
 
+   int updateAvartar(String avatar,Integer u_id);
 }

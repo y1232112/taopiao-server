@@ -2,10 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.tp.mapper.FilmMapper">
     <!-- 根据主键查询-->
-    <select id="getById" resultType="com.example.tp.entity.Film" parameterType="java.lang.Integer">
+    <select id="getFilmById" resultType="hashmap" parameterType="java.lang.Integer">
+        select f.film_id,f.film_name,f.film_length,f.director,f.brief,f.product_area,type,f.public_date,f.end_date,f.actor,img,
+              (select looked_time from user_film as uf4 where f.film_id=uf4.film_id and user_id=#{user_id}) as looked_time,
+        (select count(*) from user_film as uf5 where f.film_id=uf5.film_id and uf5.wish_status=1) as wish_nums,
+        (select count(*) from user_film as uf6 where f.film_id=uf6.film_id and uf6.looked=1) as looked_nums
+        from film as f
+        where film_id = #{id}
+    </select>
+
+    <select id="getBuyAboutFilm" resultType="hashmap" parameterType="java.lang.Integer">
+        select f.film_id,f.film_name,f.film_length,f.director,f.brief,f.product_area,type,f.public_date,f.end_date,f.actor,img,
+        (select count(*) from user_film as uf5 where f.film_id=uf5.film_id and uf5.wish_status=1) as wish_nums,
+        (select count(*) from user_film as uf6 where f.film_id=uf6.film_id and uf6.looked=1) as looked_nums,
+        (select avg(score) from user_comment where t_id=#{id}  and type=1 ) as avgscore,
+         (select count(*) from user_comment where t_id=#{id}  and type=1 ) as score_nums
+        from film as f
+        where film_id = #{id}
+    </select>
+    <select id="getFilmByName" resultType="java.lang.String" parameterType="hashmap">
         select *
         from film
-        where film_id = #{id}
+        where film_name=#{film_name}
     </select>
     <!--    查询所有用户-->
     <select id="getAllFilm" resultType="hashmap">
@@ -13,15 +31,11 @@
     </select>
 <!--    添加电影-->
     <insert id="addFilm" parameterType="com.example.tp.entity.Film" useGeneratedKeys="true" keyProperty="filmId">
-    <if test="publicDate!=''">
-        insert into film(film_name,film_length,product_area,director,status,brief,type,public_date,wish_num,score,actor,img)
-   values (#{filmName},#{filmLength},#{productArea},#{director},#{status},#{brief},#{type},#{publicDate},#{wishNum},#{score},#{actor},#{img})
-    </if>
-    <if test="publicDate==''">
-        insert into film(film_name,film_length,product_area,director,status,brief,type,wish_num,score,actor,img)
-        values (#{filmName},#{filmLength},#{productArea},#{director},#{status},#{brief},#{type},#{wishNum},#{score},#{actor},#{img})
 
-    </if>
+        insert into film(film_name,film_length,product_area,director,brief,type,public_date,end_date,actor,img)
+   values (#{filmName},#{filmLength},#{productArea},#{director},#{brief},#{type},#{publicDate},#{endDate},#{actor},#{img})
+
+
     </insert>
 <!--    根据id删除电影-->
     <delete id="deleteFilmById" timeout="20">
@@ -42,9 +56,15 @@
 <!--        where film_id=#{filmId}-->
 <!--    </update>-->
     <update id="modifyFilm" parameterType="com.example.tp.entity.Film">
+
         update film
-        set film_name=#{filmName},film_length=#{filmLength},product_area=#{productArea},director=#{director},status=#{status},brief=#{brief},type=#{type},public_date=#{publicDate},wish_num=#{wishNum},score=#{score},actor=#{actor},img=#{img}
+        set film_name=#{filmName},film_length=#{filmLength},product_area=#{productArea},director=#{director},brief=#{brief},type=#{type},public_date=#{publicDate},end_date=#{endDate},actor=#{actor}
+        <if test="img !='' and img!=null">
+        ,img=#{img}
+        </if>
         where film_id=#{filmId}
+
+
     </update>
     <!--    查询数据长度-->
     <select id="getFilmCount" resultType="java.lang.Integer">
@@ -64,9 +84,6 @@
             <if test="director !='' and director !=null">
                 and director like "%${director}%"
             </if>
-            <if test="status !='' and status !=null">
-                and status like "%${status}%"
-            </if>
             <if test="product_area !='' and product_area !=null">
                 and product_area like "%${product_area}%"
             </if>
@@ -76,5 +93,53 @@
         </where>
 
 
+    </select>
+<!--    获得热映电影-->
+    <select id="getHotFilms" resultType="hashmap">
+        select distinct f.film_id,f.film_name,f.film_length,f.director,f.brief,type,f.public_date,f.end_date,f.actor,img,
+        (select count(*) from user_film as uf5 where f.film_id=uf5.film_id and uf5.wish_status=1) as wish_nums,
+        (select count(*) from user_film as uf6 where f.film_id=uf6.film_id and uf6.looked=1) as looked_nums
+        from film as f,cinemas as c,schedule as s
+      where
+      f.public_date <![CDATA[<=]]>#{date}
+        and f.end_date<![CDATA[>=]]>#{date}
+              and c.city=#{city}
+        and  s.film_id=f.film_id
+        and s.cinema_id=c.cinema_id
+            and s.show_date<![CDATA[>=]]>#{date}
+
+
+    </select>
+<!--    获得待映电影-->
+    <select id="getWillFilms" resultType="hashmap">
+        select f.film_id,f.film_name,f.film_length,f.director,f.brief,type,f.public_date,f.end_date,f.actor,img,
+              (select wish_status from user_film as uf  where f.film_id=uf.film_id and user_id=#{user_id}) as wish_status,
+              (select looked from user_film as uf2  where f.film_id=uf2.film_id and user_id=#{user_id}) as looked,
+              (select wish_time from user_film as uf3 where f.film_id=uf3.film_id and user_id=#{user_id}) as wish_time,
+              (select looked_time from user_film as uf4 where f.film_id=uf4.film_id and user_id=#{user_id}) as looked_time,
+        (select count(*) from user_film as uf5 where f.film_id=uf5.film_id and uf5.wish_status=1) as wish_nums,
+        (select count(*) from user_film as uf6 where f.film_id=uf6.film_id and uf6.looked=1) as looked_nums
+        from film as f
+        <if test="date != null and date != ''">
+            where public_date <![CDATA[>=]]>#{date}
+        </if>
+    </select>
+
+
+
+<!--    更新想看记录数-->
+<!--    <update id="countWishNum" parameterType="java.lang.Integer" >-->
+<!--        update film-->
+<!--        set wish_num =#{wish_num}-->
+<!--        where film_id=#{film_id}-->
+<!--    </update>-->
+    <update id="countWishNum" parameterType="java.lang.Integer" >
+        update film
+        set wish_num =#{wish_num},version=version+1
+        where film_id=#{film_id} and version=#{version}
+    </update>
+    <select id="selectWishById" parameterType="java.lang.Integer" resultType="hashmap">
+        select wish_num,version from film
+        where film_id=#{id}
     </select>
 </mapper>

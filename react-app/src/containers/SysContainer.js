@@ -13,6 +13,11 @@ import AddCinema from "../components/AddCinema";
 import EditCinema from "../components/EditCinema";
 import CinemaList from "../components/CinemaList";
 import ButtonSearchBar from "../components/ButtonSearchBar";
+import AddCinemaAdmin from "../components/AddCinemaAdmin";
+import EditCinemaAdmin from "../components/EditCinemaAdmin";
+import CinemaAdminList from "../components/CinemaAdminList";
+import {receivePostImgUrl} from "../actions";
+import AddRole from "../components/AddRole";
 class SysContainer extends React.Component{
 
 
@@ -22,6 +27,9 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
     if (nextProps!==this.props){
         return true
     }
+}
+componentDidMount() {
+    store.dispatch(receivePostImgUrl(""))
 }
 
     render() {
@@ -33,15 +41,10 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
         let films=this.props.films;
         let movieCrew=this.props.movieCrew;
         let cinemas=this.props.cinemas;
-
-        {console.log('---crew up  test------',this.props.moviecrew)}
-        {console.log('---crew up  test--let----',movieCrew)}
+        let cinemaAdmins=this.props.cinemaAdmins;
 
         let menuResponse=this.props.menuResponse;
-        // console.log('---meu----',menuresponse)
-        // console.log('----films----',films)
-        // console.log('----movieCrew----',movieCrew)
-        // console.log('--this  props--movieCrew----',this.props.movieCrew)
+
         const wrapStyle={
                 margin:'0',
                 padding:'0',
@@ -71,15 +74,17 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
             backgroundColor:'#fffefd',
         };
         const contentStyle={
-            // width:'100%',
+
             margin: '25px',
             backgroundColor:'#ffffff',
         };
-        const titleStytle={
-            height:'70px',
+        const titleStyle={
+             minHeight:'30px',
             backgroundColor:'#eaeaea',
             borderRadius:'2px',
             whiteSpace:'no-warp',
+
+
         }
         const dataMargin={
 
@@ -121,10 +126,6 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
                 dataIndex:'film_length'
             },
             {
-                title:'状态',
-                dataIndex:'status'
-            },
-            {
                 title:'出产地区',
                 dataIndex:'product_area'
             },
@@ -141,13 +142,10 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
                 dadaIndex:'public-date'
             },
             {
-                title:'想看人数',
-                dadaIndex:'wish_num'
+                title:'下档时间',
+                dadaIndex:'end_date'
             },
-            {
-                title:'综合评分',
-                dadaIndex:'score'
-            },
+
             {
                 title:'主演',
                 dadaIndex:'actor'
@@ -165,6 +163,10 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
            {
                title:'影员姓名',
                dataIndex: 'movie_crew_name'
+           },
+           {
+               title:'性别',
+               dataIndex:'sex'
            },
            {
                title:'影员照片',
@@ -195,30 +197,68 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
             }
 
         ]
+        const columns4=[
+            {
+                title:'管理员编号',
+                dataIndex:'cinema_admin_id'
+            },
+            {
+                title:'管理员昵称',
+                dataIndex: 'nick_name'
+            },{
+                title:'电话',
+                dataIndex:'phone'
+            },
+            {
+                title:'真实姓名',
+                dataIndex:'real_name'
+            },
+            {
+                title:'出生日期',
+                dataIndex:'birth'
+            },
+            {
+                title:'性别',
+                dataIndex:'sex'
+            },
+            {
+                title:'头像',
+                dataIndex:'avatar'
+            }
+
+        ]
 
         //条件渲染
         const showTitle=()=>{
             switch (menuResponse) {
                 case 1:
-                    return "添加影片"
+                    return "影片管理>添加影片"
                 case 2:
-                    return "编辑影片"
+                    return "影片管理>编辑影片"
                 case 3:
-                    return "电影列表"
+                    return "影片管理>电影列表"
                 case 4:
-                    return "添加影员"
+                    return "影员管理>添加影员"
                 case 5:
-                    return "编辑影员"
+                    return "影员管理>编辑影员"
                 case 6:
-                    return "影员列表"
+                    return "影员管理>影员列表"
                 case 7:
-                    return "添加影院"
+                    return "影院管理>添加影院"
                 case 8:
-                    return "编辑影院"
+                    return "影院管理>编辑影院"
                 case 9:
-                    return "影院列表"
+                    return "影院管理>影院列表"
+                case 10:
+                    return "管理员管理>添加管理员"
+                case 11:
+                    return "管理员管理>编辑管理员"
+                case 12:
+                    return "管理员管理>管理员列表"
+                case 13:
+                    return "角色管理>添加角色"
                 default:
-                    return "添加影片"
+                    return "影片管理>添加影片"
             }
         }
         const  showContent=()=>{
@@ -243,6 +283,14 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
                     return <EditCinema DataSource={cinemas} Columns={columns3}/>
                 case 9:
                     return <CinemaList DataSource={cinemas} Columns={columns3}/>
+                case 10:
+                    return <AddCinemaAdmin/>
+                case 11:
+                    return <EditCinemaAdmin DataSource={cinemaAdmins} Columns={columns4}/>
+                case 12:
+                    return <CinemaAdminList DataSource={cinemaAdmins} Columns={columns4}/>
+                case 13:
+                    return <AddRole/>
                 default:
                    return <AddFilm/>
             }
@@ -263,8 +311,8 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
                     </div>
                     <div style={contentStyle}>
                         <div id={'content'} style={dataMargin}>
-                            <div style={titleStytle} >
-                                <label>
+                            <div style={titleStyle} >
+                                <label id={"title_show"}>
                                     {
                                     showTitle()
                                     }
@@ -276,9 +324,11 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
                                     movieCrewPageInfo={this.props.movieCrewPageInfo}
                                     cinemaPageInfo={this.props.cinemaPageInfo}
                                     filmPageInfo={this.props.filmPageInfo}
+                                    cinemaAdminPageInfo={this.props.cinemaAdminPageInfo}
                                     queryStatusMovieCrew={this.props.queryStatusMovieCrew}
-                                queryStatusCinema= {this.props.queryStatusCinema}
-                                queryStatusFilm= {this.props.queryStatusFilm}
+                                    queryStatusCinema= {this.props.queryStatusCinema}
+                                    queryStatusFilm= {this.props.queryStatusFilm}
+                                    queryStatusCinemaAdmin={this.props.queryStatusCinemaAdmin}
                                 />
                             </div>
                             <div id={'dataContent'} style={table}>
@@ -295,15 +345,21 @@ shouldComponentUpdate(nextProps, nextState, nextContext) {
     }
 }
 const mapStateTopProps=state=>({
-    change:state.loginPrivate,
-    films:state.films,
     menuResponse:state.menuResponse,
+    change:state.loginPrivate,
+    checkedList:state.checkedList,
+
+    films:state.films,
     movieCrew:state.movieCrew,
     cinemas:state.cinemas,
-    checkedList:state.checkedList,
+    cinemaAdmins: state.cinemaAdmins,
+
+    filmPageInfo: state.filmPageInfo,
     movieCrewPageInfo: state.movieCrewPageInfo,
     cinemaPageInfo: state.cinemaPageInfo,
-    filmPageInfo: state.filmPageInfo,
+    cinemaAdminPageInfo: state.cinemaAdminPageInfo,
+
+    queryStatusCinemaAdmin: state.queryStatusCinemaAdmin,
     queryStatusMovieCrew: state.queryStatusMovieCrew,
     queryStatusCinema: state.queryStatusCinema,
     queryStatusFilm: state.queryStatusFilm

@@ -30,10 +30,13 @@ public class ApplicationInterceptor implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod= (HandlerMethod) handler;
         Method method=handlerMethod.getMethod();
+        String token0=request.getHeader("token");
+        System.out.println("token"+token0);
 //        如果打上AuthToken则进行验证
         if(method.getAnnotation(AuthToken.class)!=null||handlerMethod.getBeanType().getAnnotation(AuthToken.class)!=null)
         {
             String token=request.getHeader("token");
+            System.out.println("token"+token);
 
         }
         return false;

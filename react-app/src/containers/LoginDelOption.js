@@ -2,7 +2,7 @@ import React from "react";
 import Axios from "axios";
 import {cinemaAdminLoginApi, sysLoginApi} from "../apis/api";
 import {setCookie} from "../utils/cookieUtils";
-
+import md5 from "js-md5";
 import {connect} from "react-redux";
 
 class LoginDelOption extends React.Component{
@@ -51,8 +51,13 @@ class LoginDelOption extends React.Component{
                 Axios.post(sysLoginApi, json)
                     .then((response) => {
                         let msg = response.data.message;
+                        let status_type=response.data.status_type;
                         console.log('---response--message----',msg);
+                        alert(msg);
                         if (msg == '操作成功') {
+                            setCookie("s_id",response.data.id)
+                            setCookie("s_token",response.data.token)
+                            setCookie("status_type",status_type);
                             setCookie("SYS_ADMIN", admin, 20);
                             setCookie("SYS_PASSWORD", password, 20);
 
@@ -79,8 +84,13 @@ class LoginDelOption extends React.Component{
                 Axios.post(cinemaAdminLoginApi, json)
                     .then(function (response) {
                         let msg = response.data.message;
+                        let status_type=response.data.status_type;
                         alert(msg);
+
                         if (msg == '操作成功') {
+                            setCookie("c_id",response.data.id)
+                            setCookie("c_token",response.data.token)
+                            setCookie("status_type",status_type)
                             setCookie("CINEMA_ADMIN", admin, 20);
                             setCookie("CINEMA_PASSWORD", password, 20);
                             // this.props.history.push('/sysadmin');
@@ -91,7 +101,7 @@ class LoginDelOption extends React.Component{
                         }
                     })
                     .catch(function (error) {
-                        alert('登陆失败');
+
                         routerFailSkip();
 
                     });

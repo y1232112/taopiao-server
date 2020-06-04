@@ -1,22 +1,24 @@
 package com.example.tp.entity;
 
 public class Order {
-    private Integer orderId;
+    private String orderId;
     private Integer userId;
     private Integer scheduleId;
     private String orderPhone;
     private String orderDate;
     private Integer ticketNum;
     private double ticketTotalPrice;
-    private String seatInfo;
     private String payType;
     private String phoneCode;
+    private Integer status;
 
-    public Integer getOrderId() {
+
+
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
@@ -68,13 +70,6 @@ public class Order {
         this.ticketTotalPrice = ticketTotalPrice;
     }
 
-    public String getSeatInfo() {
-        return seatInfo;
-    }
-
-    public void setSeatInfo(String seatInfo) {
-        this.seatInfo = seatInfo;
-    }
 
     public String getPayType() {
         return payType;
@@ -92,6 +87,14 @@ public class Order {
         this.phoneCode = phoneCode;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -102,9 +105,9 @@ public class Order {
                 ", orderDate='" + orderDate + '\'' +
                 ", ticketNum=" + ticketNum +
                 ", ticketTotalPrice=" + ticketTotalPrice +
-                ", seatInfo='" + seatInfo + '\'' +
                 ", payType='" + payType + '\'' +
                 ", phoneCode='" + phoneCode + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

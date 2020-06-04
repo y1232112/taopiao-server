@@ -16,6 +16,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 //@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
 //@ServletComponentScan//扫描所有servlet
 @SpringBootApplication
+@ServletComponentScan(basePackages = "com.example.tp.utils")
 public class TaopiaoApplication {
 
     public static void main(String[] args) {

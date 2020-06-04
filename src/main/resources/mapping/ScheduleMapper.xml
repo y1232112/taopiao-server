@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.ScheduleMapper">
+<!--  插入场次信息-->
+    <insert id="addScheduleInfo" parameterType="com.example.tp.entity.Schedule">
+        insert into schedule(film_id,cinema_id,hall_id,show_date,origin_price,discount,discount_price,start_time,end_time,language)
+        values (#{filmId},#{cinemaId},#{hallId},#{showDate},#{originPrice},#{discount},#{discountPrice},
+        #{startTime},#{endTime},#{language})
+    </insert>
+<!--根据影院id查询场次信息-->
+    <select id="selectScheduleByCinemaId"  resultType="hashmap">
+         select s.schedule_id,s.cinema_id,s.film_id,s.hall_id,s.show_date,s.origin_price,
+         s.discount,s.discount_price,s.start_time,s.end_time,s.language,
+        (select hall_name from hall where s.hall_id=hall.hall_id and hall.cinema_id=#{id}) as hall_name
+          from schedule as s
+         where cinema_id=#{id} and show_date <![CDATA[>=]]>#{date}
+    </select>
+<!--    根据影院id和电影id插叙场次信息-->
+    <select id="selectAcinemaAfilmSchedule"  resultType="hashmap">
+         select s.schedule_id,s.cinema_id,s.film_id,s.hall_id,s.show_date,s.origin_price,
+         s.discount,s.discount_price,s.start_time,s.end_time,s.language,h.hall_name
+          from schedule as s,hall as h
+         where s.cinema_id=#{cinema_id} and s.cinema_id=h.cinema_id and s.hall_id=h.hall_id and s.film_id=#{film_id}
+         and show_date <![CDATA[>=]]>#{date}
+    </select>
+    <select id="selectScheduleById" resultType="hashmap" parameterType="java.lang.Integer">
+        select * from schedule where schedule_id=#{schedule_id}
+    </select>
+    <delete id="deleteSchedule" parameterType="java.lang.Integer">
+        delete from schedule
+        where schedule_id=#{schedule_id}
+    </delete>
+</mapper>

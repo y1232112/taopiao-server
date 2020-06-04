@@ -1,7 +1,8 @@
 import {FILM_PAGE_SIZE} from "../constants/actionTypes";
+import {DEFAULT_PAGE_SIZE} from "../constants/const";
 
 const initState={
-    filmPageSize:5
+    filmPageSize:DEFAULT_PAGE_SIZE
 }
 const filmPageSize=(state=initState,action)=>{
     if (action.type===FILM_PAGE_SIZE){

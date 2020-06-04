@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.OrderMapper">
+
+    <insert id="addOrder" parameterType="com.example.tp.entity.Order" >
+      insert into order_sd(order_id,user_id,schedule_id,order_phone,order_date,ticket_num,ticket_total_price,pay_type,phone_code
+    ,status)
+     values (#{orderId},#{userId},#{scheduleId},#{orderPhone},#{orderDate},#{ticketNum},#{ticketTotalPrice},#{payType},#{phoneCode}
+    ,#{status})
+    </insert>
+    <select id="selectOrder" parameterType="com.example.tp.entity.Order" resultType="hashmap">
+        select * from order_sd where schedule_id=#{scheduleId} and user_id=#{userId}
+    </select>
+    <select id="queryUserOrderFilm"  parameterType="java.lang.Integer" resultType="hashmap">
+        select * from order_sd where user_id=#{user_id}
+    </select>
+    <update id="updateOrderFilm" parameterType="com.example.tp.entity.Order" >
+        update order_sd set pay_type=#{payType},phone_code=#{phoneCode},status=#{status}
+        where order_id=#{orderId}
+    </update>
+</mapper>

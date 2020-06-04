@@ -45,46 +45,77 @@ body{
 /******************* 导航菜单样式 **************************************************************8*/
 #menu{
 
-
-    padding-left: 0px;
+   /*font-size: 20px;*/
+    padding: 0px;
     margin: 0px;
-    background-color: #1d1d48;
+    background-color: #1e1e46;
 }
+#menu .two_ul {
+    /*text-indent: 25mm;*/
+    margin: 0;
+    padding: 0;
+    /*width: 100%;*/
 
+
+
+}
 #menu li{
+   list-style-type: none;
+    /* width: 100%;*/
+    /*font-size: 20px;*/
+    /*margin:8px 0px;*/
+    /*padding: 3px  0px 3px 0px;*/
 
-     width: 100%;
-    list-style: none;
-    margin:0;
-    padding: 8px  0px;
 }
-
 
 #menu .warp_li{
-    text-indent: 20mm;
-}
+    text-indent: 10mm;
+    list-style: decimal inside;
 
+}
+#menu .two_li{
+    /*list-style-type: none;*/
+    padding-left: 50px;
+
+}
+/*#menu .two_li:first-child{*/
+/*    list-style-image: url("./imges/add_ic_mine_gaitubao_20x20.png");*/
+/*}*/
+#menu .two_li:nth-child(2){
+    background: url("./imges/edit_gaitubao_13x13.png") no-repeat  60px 5px;
+
+}
+#menu .two_li:nth-child(3){
+   background: url("./imges/list_ic_mine_gaitubao_13x13.png") no-repeat  60px 5px;
+
+}
 #menu .warp_li:focus{
     background-color: cornflowerblue;
 
 }
+  #people_1 li:first-child,#people_2 li:first-child{
+    /*list-style-type: square;*/
+    /*list-style-image: url("./imges/add_ic_people_gaitubao_20x20.png");*/
+      background: url("./imges/add_ic_people_gaitubao_13x13.png") no-repeat  60px 5px ;
+}
+  #film_ul li:first-child,#cinema_ul li:first-child{
+
+      background: url("./imges/add_ic.png") no-repeat  60px 5px;
+  }
 #menu .warp_li:hover{
 
     cursor: pointer;
     background-color: #1a1a35;
 }
-.two_ul{
-    text-indent: 25mm;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
+
 #menu li .two_li:hover{
     background-color: #1d1d48;
-    border-bottom:#ffffff 1px  solid;
-    border-image: linear-gradient(to right, #1d1d48, #d5d5d5, #1d1d48) 1 10;
+    /*border-bottom:#ffffff 1px  solid;*/
+    /*border-image: linear-gradient(to right, #1e1e46, #727272, #1e1e46, #1d1d48) 0.3 1;*/
 }
-
+#menu li .two_li:active{
+    background-color: #27277d;
+}
 #menu:active{
     cursor: pointer;
 }
@@ -170,7 +201,7 @@ body{
 }
 
 th{
-    background-color: #ececec;
+    background-color: #f1f1f1;
     color: #272727;
     height: 35px;
     border:#ececec 1px solid;
@@ -179,11 +210,12 @@ th{
 }
 td{
     padding: 10px;
-
+     max-width: 200px;
     height: 30px;
     margin: 0px;
     word-break: break-all;
     white-space: nowrap;
+    overflow: auto;
 }
 
 tr{
@@ -307,7 +339,7 @@ table:hover{
     margin-right: 12px;
 }
  .pageSpan a{
-    width: 60px;
+    width: 100px;
     height: 60px;
     padding: 5px 3px;
     background-color: #f7f7f7;
@@ -316,8 +348,8 @@ table:hover{
     border-radius: 2px;
 }
 .pageSpan a:hover{
-    background-color: #1E90FF;
-    color: white;
+    background-color: #80000d;
+    color: #f7f7f7;
     cursor: pointer;
     border-radius: 2px;
 }
@@ -332,8 +364,16 @@ table:hover{
     color: #1E90FF;
 
 }
+#cinemaOption{
+    font-size: 14px;
+}
 /**************** 组件   ButtonSearchBar *****************/
 /*ButtonSearchBar.js*/
+#title_show{
+    font-weight: bold;
+
+}
+
 .someDeleteBtn{
     background-color: #1E90FF;
     border:1px solid #777;
@@ -383,10 +423,36 @@ table:hover{
     /*box-shadow: 10px 10px 5px #888888;*/
     /*border: #888888 1px solid;*/
     border: #777777 1px solid;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.43);
+}
+#dialog .wrap_edt_cinema_dialog{
+   background-color: #ffffff;
+    width: 500px;
+
+}
+#dialog .wrap_edt_admin_dialog{
+    background-color: #ffffff;
+    width: 600px;
+
+}
+#dialog .wrap_edt_movieCrew_dialog{
+    background-color: #ffffff;
+    width: 500px;
+}
+#dialog .wrap_edt_film_dialog{
+    background-color: #ffffff;
+    width: 500px;
 }
 .dbutton{
     background-color: #1E90FF;
-    border:1px solid #777;
+    /*border:1px solid #777;*/
     color: #ffffff;
     margin: 10px;
     width: 70px;
@@ -400,14 +466,19 @@ table:hover{
     background-color: rgba(30, 144, 255, 0.75);
 }
 .dialogInput{
-    width: 60%;
+    width: 198px;
     float: right;
 
+}
+.fdialogInput1{
+    width: 198px;
+    float: right;
+    height: 150px;
 }
 .dialogInput1{
     outline:none;
     border:none;
-    width: 60%;
+    width: 198px;
     float: right;
     caret-color: rgba(0, 0, 0, 0)
 }
@@ -415,33 +486,19 @@ table:hover{
     outline:none;
     border:none;
 }
-.dialogLabel{
-    width: 60%;
 
-}
 .dialogLabel{
-    width: 40%;
+    display: inline-block;
+    text-align: right;
+    width: 120px;
 }
 #dialogWrap div{
     margin-top: 20px;
 }
-/*添加电影*/
-.addLabel{
-    width: 40%;
-}
-.addInput{
-    width: 60%;
-    float: right;
-    border: #b4b4b4 1px solid;
-    border-radius: 4px;
-}
-.addInput:hover{
-    cursor: pointer;
-    border-radius: 2px;
-}
+/*---------------------------------添加电影*/
 .addBar{
-    width: 40%;
-    margin: 0 auto;
+    width: 320px;
+    margin: 10px auto;
 }
 .addBar div{
     margin-top: 20px;
@@ -449,6 +506,58 @@ table:hover{
 .add_button_row{
     width: 100%;
     text-align: center;
+}
+.addBar label{
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+}
+.addLabel{
+    /*width: 40%;*/
+    width: 120px;
+
+    /*float: right;*/
+}
+.addLabe2{
+    /*width: 40%;*/
+    width: 120px;
+
+    /*float: right;*/
+}
+.addInput{
+    /*width: 60%;*/
+    width: 198px;
+    float: right;
+    border: #b4b4b4 1px solid;
+    border-radius: 4px;
+    vertical-align: top;
+
+
+}
+.addInput1{
+    width: 198px;
+    float: right;
+    border: #b4b4b4 1px solid;
+    border-radius: 4px;
+    vertical-align: top;
+    height: 150px;
+}
+.addInput:hover{
+    cursor: pointer;
+    border: #b4b4b4 1px solid;
+    border-radius: 4px;
+}
+.addInput:active{
+    cursor: pointer;
+    border-radius: 8px;
+    border: #b4b4b4 1px solid;
+
+}
+.addInput:focus{
+    cursor: pointer;
+    border-radius: 0px;
+    border: #b4b4b4 1px solid;
+
 }
 /*删除的弹窗样式*/
 .deleteDialog{
@@ -477,10 +586,329 @@ table:hover{
     border-radius: 1px;
 
 }
+
 /********************* not found *******************************/
 #not_found{
     background-image: url("./imges/bg_notfound.jpg");
 }
 #goBackBtn{
     background-image: url("./imges/bg_direct.png");
+}
+/*************************分配*********************************8*/
+#no_ass_cinema_admin_table{
+    width: 100%;
+
+}
+#Assign{
+
+}
+#Assign .qBtn,reBtn{
+    background-color: #1E90FF;
+    color: #ffffff;
+    margin: 4px;
+    width: 50px;
+    height: 27px;
+    border-radius: 5px;
+    border: none;
+}
+.no_ass_page{
+    margin-top: 25px;
+}
+.no_ass_page .countStyle{
+   color: #b40806;
+    font-size: 28px;
+}
+.no_ass_page .count{
+    font-size: 12px;
+}
+.no_ass_page .count{
+    margin-right: 15px;
+}
+#gotoPage_02{
+    width: 60px;
+}
+#ass_confirm_info{
+    border: rgba(0, 0, 0, 0.25) 1px solid;
+    width: 310px;
+    min-height: 210px;
+}
+#confirm_ass_wrap{
+    border: rgba(119, 119, 119, 0.46) 1px solid;
+    overflow: auto;
+}
+
+#ass_confirm_info span{
+    width: 155px;
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 13px;
+
+}
+#ass_confirm_info .title{
+    text-align: right;
+    font-weight: bold;
+
+}
+#ass_confirm_info button{
+    background-color: #1E90FF;
+    color: #ffffff;
+   margin: 10px;
+    width: 50px;
+    height: 24px;
+    border-radius: 5px;
+    border: none;
+    font-size: 12px;
+    padding: 2px;
+
+}
+#ass_confirm_info button:focus{
+    border-radius: 0px;
+}
+#ass_confirm_info button:hover{
+    background-color: rgba(30, 144, 255, 0.69);
+}
+#ass_confirm_info .confirm_btn_div{
+    text-align: center;
+   border-top: #d5d5d5 1px solid;
+    margin-top: 10px;
+
+}
+#ass_confirm_info .tip{
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    width: 100%;
+    border-bottom: #d5d5d5 1px solid;
+    padding: 5px;
+}
+/******************************************影院模块菜单设计**************************/
+#cinema_menu li{
+    list-style: none;
+   padding-bottom: 0px;
+    /*padding-top: 5px;*/
+}
+#cinema_menu ul{
+
+    width: 100%;
+
+}
+#cinema_menu .warp_li{
+    list-style: decimal inside;
+    text-indent: 2em;
+}
+#cinema_menu .warp_li:hover{
+    background-color: #1a1a35;
+}
+#cinema_menu .two_li:first-child{
+    background: url("./imges/add_ic.png") no-repeat 60px 5px;
+
+
+}
+#cinema_menu .two_li:nth-child(2){
+    background: url("./imges/chakan.png") no-repeat 60px 5px;
+
+}
+#cinema_menu .two_ul{
+    padding: 0;
+
+}
+#cinema_menu{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e46;
+}
+#cinema_menu ul:hover,#cinema_menu li:hover{
+    cursor: pointer;
+
+}
+
+#cinema_menu li{
+   /*list-style-type: none;*/
+}
+#cinema_menu .two_li{
+    padding-left: 50px;
+
+
+}
+#cinema_menu .two_li:hover{
+    background-color: #222251;
+}
+#cinema_menu .two_li:active{
+    background-color: #29297a;
+}
+#cinema_menu .two_li,#cinema_menu .warp_li{
+    /*display: inline-block;*/
+    /*border-top: #d5d5d5 1px solid;*/
+    /*border-bottom: #d5d5d5 0.01px solid;*/
+}
+#menuContainer{
+    background-color: #2a2a58;
+    /*text-align: center;*/
+}
+/************************hall***********************/
+#add_hall .info_btn{
+    background-color: #1E90FF;
+    color: #ffffff;
+    border: none;
+    width: 50px;
+    border-radius: 2px;
+}
+#hall_ul{
+    list-style: none;
+    width: 100%;
+    background-color: #f1f1f1;
+    margin: 0;
+    padding: 10px;
+}
+#hall_ul .menu_li{
+    display: inline;
+    padding: 5px;
+}
+#hall_ul .menu_li:hover{
+    background-color: #202040;
+    color: #d5d5d5;
+    cursor: pointer;
+}
+#hall_info .hall_info_title{
+     color: #777;
+    padding: 5px;
+}
+#hall_info .hall_info_description{
+    color: #7b0b19;
+    padding-right: 15px;
+    font-weight: bold;
+}
+#input_file{
+    border: none;
+}
+/*************************add schedule************/
+#schedule_info .put{
+    width: 162px;
+    border: 1px solid #777;
+
+}
+#schedule_info .select{
+    width: 162px;
+}
+#schedule_info label{
+   font-weight: bold;
+    color: #777;
+}
+#schedule_info input{
+    border-radius: 2px;
+}
+#schedule_info input:hover{
+    border-radius: 0px;
+}
+.schedule_btn{
+    background-color: #1E90FF;
+    color: #ffffff;
+    border: none;
+    width: 50px;
+    border-radius: 2px;
+    margin: 15px;
+    height: 28px;
+}
+.schedule_btn:hover{
+    background-color: rgba(30, 144, 255, 0.65);
+}
+/*****************************************/
+#cinemaSearchFilm .qBtn{
+    background-color: #1E90FF;
+    /*border:1px solid #777;*/
+    color: #ffffff;
+    margin: 4px;
+    width: 50px;
+    height: 27px;
+    border-radius: 5px;
+    border: none;
+}
+
+/****************  serve ***********88*/
+.myServeBtn{
+    background-color: #1E90FF;
+    /*border:1px solid #777;*/
+    color: #ffffff;
+    margin: 4px;
+    width: 70px;
+    height: 27px;
+    border-radius: 5px;
+    border: none;
+}
+.myServeBtn:hover{
+    background-color: rgba(30, 144, 255, 0.65);
+}
+/****************  snack ***********88*/
+.snack_warp1{
+    width: 400px;
+    display: flex;
+}
+.snack_warp2{
+    width: 200px;
+   text-align: right;
+    padding-right: 25px;
+}
+.snack_warp3{
+    width: 200px;
+
+}
+.item{
+    background-color: #ffffff;
+    margin: 20px;
+}
+.item_m_p{
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.myBtn{
+    background-color: #1E90FF;
+    /*border:1px solid #777;*/
+    color: #ffffff;
+    margin: 4px;
+    width: 70px;
+    height: 27px;
+    border-radius: 5px;
+    border: none;
+}
+.myBtn:hover{
+    background-color: rgba(30, 144, 255, 0.65);
+}
+#to_mine_info:hover{
+    cursor: pointer;
+}
+#to_mine_info:focus{
+    cursor: pointer;
+}
+#to_mine_info{
+    font-size: 12px;
+}
+#mine_label_font{
+  font-weight: bold;
+    padding-top: 5px;
+}
+#mine_label_font div{
+    height: 22px;
+}
+/********************/
+#hall_delete_btn{
+    background-color: #1E90FF;
+    color: white;border: none;
+
+}
+#hall_delete_btn:hover{
+    background-color: rgba(30, 144, 255, 0.65);
+   color: white;
+    cursor: pointer;
+}
+.mbtn{
+    background-color: #1E90FF;
+    color: white;border: none;
+    margin-left: 5px;
+}
+.mbtn:hover{
+    background-color: rgba(30, 144, 255, 0.65);
+    color: white;
+    cursor: pointer;
+
 }

@@ -1,5 +1,7 @@
 package com.example.tp.utils;
 
+import org.springframework.context.annotation.Bean;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

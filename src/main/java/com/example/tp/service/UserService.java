@@ -58,8 +58,10 @@ public class UserService {
      * @param createtime
      * @return
      */
-   public int insertRegist(String nickname, String password, String sex, String phone, String createtime){
-        return userMapper.insertRegist(nickname,password,sex,phone,createtime);
+   public int insertRegist(String nickname, String password, String sex, String phone, String createtime,String salt){
+        return userMapper.insertRegist(nickname,password,sex,phone,createtime,salt);
     };/*插入注册信息*/
-
+   public int updateAvartar(String avatar,Integer u_id){
+       return userMapper.updateAvartar(avatar,u_id);
+   }
 }

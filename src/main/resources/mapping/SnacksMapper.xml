@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.SnacksMapper">
+  <insert id="addSnack" parameterType="com.example.tp.entity.Snacks">
+      insert into snacks(snack_id,cinema_id,num_type,origin_price,discount,discount_price,img,item1,it_size1,it_num1,
+      item2,it_size2,it_num2,item3,it_size3,it_num3,item4,it_size4,it_num4)
+      values (#{snackId},#{cinemaId},#{numType},#{originPrice},#{discount},#{discountPrice},#{img}
+      ,#{item1},#{itSize1},#{itNum1},#{item2},#{itSize2},#{itNum2}
+      ,#{item3},#{itSize3},#{itNum3},#{item4},#{itSize4},#{itNum4})
+  </insert>
+    <select id="mySnacks" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from snacks
+        where cinema_id=#{id}
+    </select>
+    <delete id="deleteSnack" parameterType="java.lang.Integer">
+        delete from snacks
+        where cinema_id=#{c_id} and snack_id =#{s_id}
+    </delete>
+    <select id="getSnack" parameterType="java.lang.Integer" resultType="hashmap">
+        select *  from snacks where id=#{id}
+    </select>
+
+</mapper>

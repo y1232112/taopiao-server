@@ -27,7 +27,7 @@
 <!--    根据用户名进行查询,用户名唯一-->
     <select id="getByName"  resultType="com.example.tp.entity.User" parameterType="map">
         select * from user_info where
-        nick_name=  #{nickname}
+        nick_name=#{nickname}
 
     </select>
     <select id="getByPhone" resultType="com.example.tp.entity.User" parameterType="map">
@@ -35,10 +35,16 @@
     </select>
 <!--    插入注册数据-->
     <insert id="insertRegist"  useGeneratedKeys="true" keyProperty="id">
-        insert into user_info (nick_name,password,sex,phone,create_time) values (#{nickname},#{password},#{sex},#{phone},
-        #{createtime})
+        insert into user_info (nick_name,password,sex,phone,create_time,salt) values (#{nickname},#{password},#{sex},#{phone},
+        #{createtime},#{salt})
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
             select LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+<!--    插入头像-->
+    <update id="updateAvartar" >
+       update user_info
+       set avatar=#{avatar}
+       where user_id=#{u_id}
+    </update>
 </mapper>

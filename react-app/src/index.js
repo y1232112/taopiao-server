@@ -8,12 +8,20 @@ import {applyMiddleware, createStore} from "redux";
 import reducer from './reducers';
 import {Provider} from "react-redux";
 import {createLogger} from "redux-logger/src";
-import getAllFilms, {getAllCinemas, getAllMovieCrew, getCinemaPage, getFilmPage, getMovieCrewPage} from "./apis/data";
+
+import {
+    getAssignCinemaAdminIds,
+    getAssignCinemaIds,
+
+    getCinemaAdminPage,
+    getCinemaPage,
+    getFilmPage,
+    getMovieCrewPage, getNoAssAdmin
+} from "./apis/data";
 import * as API from "./apis/api";
 import {LOGIN_PRIVITE_INIT} from "./constants/actionTypes";
-import {filmListApi} from "./apis/api";
-import {cinemaListApi} from "./apis/api";
-import {movieCrewListApi} from "./apis/api";
+import {DEFAULT_PAGE_SIZE, DEFAULT_START_PAGE} from "./constants/const";
+import {receivePostImgUrl} from "./actions";
 
 
 
@@ -25,13 +33,15 @@ export const store=createStore(
     reducer,
     applyMiddleware(...middleware)
 );
-// getAllFilms(filmListApi);
-// getAllCinemas(cinemaListApi);
-// getAllMovieCrew(movieCrewListApi)
-getFilmPage(API.filmPageApi,1,5);
-getCinemaPage(API.cinemaPageApi,1,5);
-getMovieCrewPage(API.movieCrewPageApi,1,5)
 
+getFilmPage(API.filmPageApi,DEFAULT_START_PAGE,DEFAULT_PAGE_SIZE);
+getCinemaPage(API.cinemaPageApi,DEFAULT_START_PAGE,DEFAULT_PAGE_SIZE);
+getMovieCrewPage(API.movieCrewPageApi,DEFAULT_START_PAGE,DEFAULT_PAGE_SIZE)
+getCinemaAdminPage(API.cinemaAdminPageApi,DEFAULT_START_PAGE,DEFAULT_PAGE_SIZE)
+getNoAssAdmin(API.cinema_no_Ass_cinemaAdminApi)
+getAssignCinemaIds(API.assignCinemaIdsApi)
+getAssignCinemaAdminIds(API.assignCinemaAdminIdsApi)
+store.dispatch(receivePostImgUrl(""))
 store.dispatch({
     type:LOGIN_PRIVITE_INIT,
     loginPrivate: 0

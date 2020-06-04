@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.ZanMapper">
+    <!-- 根据主键查询-->
+   <insert id="insertZan" parameterType="com.example.tp.entity.Zan" useGeneratedKeys="true" keyProperty="id" >
+       insert into zan (type_id,type,u_id,status,o_id) values(
+       #{typeId},#{type},#{uId},#{status},#{oId}
+       )
+
+   </insert>
+    <update id="updateZan"  >
+        update zan
+        set status=#{status}
+        where o_id=#{o_id} and type_id=#{type_id} and type=#{type} and u_id=#{user_id}
+    </update>
+    <select id="selectMyZan" parameterType="com.example.tp.entity.Zan" resultType="com.example.tp.entity.Zan">
+        select * from zan
+        where type=#{type} and type_id=#{typeId} and u_id=#{uId} and o_id=#{oId}
+    </select>
+    <select id="myZan" resultType="hashmap">
+        select type_id from zan where type=#{type}
+    </select>
+    <select id="selectCinemasAndServeByCity" parameterType="com.example.tp.entity.Cinema" resultType="hashmap">
+        select * from
+        cinemas join on serve using cinema_id
+        where cinema.city=#{city}
+    </select>
+
+</mapper>

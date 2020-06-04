@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.ServeMapper">
+   <insert id="addServe" parameterType="com.example.tp.entity.Serve">
+       insert into serve(cinema_id,serve_type,description)
+       values (#{cinemaId},#{serveType},#{description})
+   </insert>
+    <select id="myServe" parameterType="java.lang.Integer" resultType="hashmap">
+        select * from serve
+        where cinema_id=#{id}
+    </select>
+
+    <update id="updateMyServe" parameterType="com.example.tp.entity.Serve">
+        update serve
+        set description=#{description}
+        where cinema_id=#{cinemaId} and serve_type=#{serveType}
+    </update>
+    <delete id="deleteMyServe" parameterType="com.example.tp.entity.Serve">
+        delete from serve
+        where cinema_id=#{cinemaId} and serve_type=#{serveType}
+    </delete>
+
+</mapper>

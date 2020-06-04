@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.tp.mapper.SeatMapper">
+    <!-- 根据主键查询-->
+<!--    <select id="getById" resultType="cn.stephen.study.demoproject.entity.TestEntity" parameterType="java.lang.Integer">-->
+<!--        select *-->
+<!--        from test-->
+<!--        where id = #{id}-->
+<!--    </select>-->
+<!--    批量添加座位信息-->
+    <insert id="addSeats">
+        insert into seat(seat_id,cinema_id,hall_id,row,`column`,active)
+        values
+        <foreach collection="list" separator=","  item="item">
+           (#{item.seat_id},#{item.cinema_id},#{item.hall_id},#{item.row},#{item.column},#{item.active})
+        </foreach>
+    </insert>
+<!--    获取座位信息-->
+<!--    <select id="selectSeatByCinemaId" resultType="hashmap">-->
+<!--        select * from seat-->
+<!--        where hall_id=#{hall_id} and cinema_id=#{cinema_id}-->
+<!--    </select>-->
+    <select id="selectSeatByCinemaId" resultType="hashmap">
+        select * from seat
+        where cinema_id=#{id}
+    </select>
+    <select id="selectHallSeatsInfo"   resultType="hashmap">
+        select *,
+        (select count(*) from schedule as s,order_sd as o,Item as i
+        where s.schedule_id=o.schedule_id and o.schedule_id=#{schedule_id} and o.order_id=i.order_id and i.seat_id=seat.seat_id and s.cinema_id=seat.cinema_id
+        and s.hall_id =seat.hall_id) as active2
+        from
+        seat
+        where cinema_id=#{cinema_id} and hall_id=#{hall_id}
+    </select>
+    <select id="selectSeattsBySeats"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
+   select count(*) from order_sd as o,Item as i
+        where o.schedule_id=#{schedule_id} and o.order_id=i.order_id
+         and i.seat_id=#{seat_id}
+
+    </select>
+    <delete id="deleteSeats" parameterType="java.lang.Integer">
+        delete from seat where cinema_id=#{cinema_id} and hall_id=#{hall_id}
+    </delete>
+</mapper>

@@ -10,11 +10,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.DateUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 public class FilmController {
@@ -37,19 +45,17 @@ public class FilmController {
     @ResponseBody
     public String addFilm(@RequestBody String receiveJson) throws JsonProcessingException {
 
-        System.out.println("--sssssssssssssssssssssss-json--"+JsonUtils.getFormJson(receiveJson,"film_name"));
+        System.out.println("--sssssssssssssssssssssss-json--"+JsonUtils.getFormJson(receiveJson,"img"));
         Film film=new Film();
 
         film.setFilmName(JsonUtils.getFormJson(receiveJson,"film_name"));
         film.setFilmLength(JsonUtils.getFormJson(receiveJson,"film_length"));
         film.setProductArea(JsonUtils.getFormJson(receiveJson,"product_area"));
         film.setDirector(JsonUtils.getFormJson(receiveJson,"director"));
-        film.setStatus(JsonUtils.getFormJson(receiveJson,"status"));
         film.setBrief(JsonUtils.getFormJson(receiveJson,"brief"));
         film.setType(JsonUtils.getFormJson(receiveJson,"type"));
         film.setPublicDate(JsonUtils.getFormJson(receiveJson,"public_date"));
-        film.setWishNum(DataUtils.insertDbDel(JsonUtils.getFormJson(receiveJson,"wish_num")));
-        film.setScore(DataUtils.insertDbDel(JsonUtils.getFormJson(receiveJson,"score")));
+       film.setEndDate(JsonUtils.getFormJson(receiveJson,"end_date"));
         film.setActor(JsonUtils.getFormJson(receiveJson,"actor"));
         film.setImg(JsonUtils.getFormJson(receiveJson,"img"));
         int num= filmService.addFilm(film);
@@ -59,7 +65,10 @@ public class FilmController {
       }
      else return JsonUtils.delFailure();
 
+
+
     }
+
     @RequestMapping(value = "/deleteFilm/{id}",method = RequestMethod.GET)
     public String deleteFilmById(@PathVariable Integer id) throws JsonProcessingException {
         System.out.println("---id---"+id);
@@ -68,7 +77,7 @@ public class FilmController {
             return JsonUtils.delSuccess();
         }else return JsonUtils.delFailure();
     }
-    @RequestMapping(value = "/deleteFilms",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/deleteFilms",method = RequestMethod.POST)
     @ResponseBody
     public String deleteMovieCrews(@RequestBody String receiveJson) throws JsonProcessingException {
         System.out.println("---receiveJson---"+receiveJson);
@@ -92,15 +101,17 @@ public class FilmController {
         film.setFilmName(JsonUtils.getFormJson(receiveJson,"film_name"));
         film.setFilmLength(JsonUtils.getFormJson(receiveJson,"film_length"));
         film.setProductArea(JsonUtils.getFormJson(receiveJson,"product_area"));
-        film.setStatus(JsonUtils.getFormJson(receiveJson,"status"));
+
         film.setBrief(JsonUtils.getFormJson(receiveJson,"brief"));
         film.setDirector(JsonUtils.getFormJson(receiveJson,"director"));
         film.setPublicDate(JsonUtils.getFormJson(receiveJson,"public_date"));
-        film.setScore(JsonUtils.getFormJson(receiveJson,"score"));
+        film.setEndDate(JsonUtils.getFormJson(receiveJson,"end_date"));
         film.setType(JsonUtils.getFormJson(receiveJson,"type"));
-        film.setWishNum(JsonUtils.getFormJson(receiveJson,"wish_num"));
         film.setActor(JsonUtils.getFormJson(receiveJson,"actor"));
-        film.setImg(JsonUtils.getFormJson(receiveJson,"img"));
+        if (JsonUtils.getFormJson(receiveJson,"img")!=""){
+            film.setImg(JsonUtils.getFormJson(receiveJson,"img"));
+        }
+
         System.out.println("----Film---"+film);
 //
         int num= filmService.modifyFilm(film);
@@ -127,10 +138,11 @@ public class FilmController {
     }
     @RequestMapping(value = "/film/search",method = RequestMethod.GET)
     public String searchFilm(@RequestParam("film_name")String film_name, @RequestParam("director")String director,
-                             @RequestParam("status")String status, @RequestParam("product_area")String product_area,
+                            @RequestParam("product_area")String product_area,
                             @RequestParam("type")String type) throws JsonProcessingException {
+        System.out.println("film search---");
         ObjectMapper mapper=new ObjectMapper();
-        return mapper.writeValueAsString(filmService.searchFilm(film_name, director, status, product_area, type));
+        return mapper.writeValueAsString(filmService.searchFilm(film_name, director, product_area, type));
     }
 
 }
